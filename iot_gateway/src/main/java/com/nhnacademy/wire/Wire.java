@@ -1,12 +1,27 @@
 package com.nhnacademy.wire;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import com.nhnacademy.message.Message;
 
-public interface Wire {
+public class Wire {
+    Queue<Message> messageQueue;
 
-    public void put(Message message);
+    public Wire() {
+        super();
+        messageQueue = new LinkedList<>();
+    }
 
-    public boolean hasMessage();
+    public void put(Message message) {
+        messageQueue.add(message);
+    }
 
-    public Message get();
+    public boolean hasMessage() {
+        return !messageQueue.isEmpty();
+    }
+
+    public Message get() {
+        return messageQueue.poll();
+    }
 }
