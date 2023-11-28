@@ -1,6 +1,8 @@
 package com.nhnacademy;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.paho.client.mqttv3.IMqttClient;
@@ -30,18 +32,31 @@ public class Main {
         String application_name = "application";
         publisher.subscribe(application_name + "/#", (topic, msg) -> {
             String[] topics = topic.split("/");
+            String[] sensors = { "temperature", "humidity" };
+            List<String> sensorList = Arrays.asList(sensors);
             JSONParser parser = new JSONParser();
             Object obj = parser.parse(new String(msg.getPayload()));
             JSONObject jsonObj = (JSONObject) obj;
 
-            if (jsonObj.containsKey("object"))
-                if (((JSONObject) jsonObj.get("deviceInfo")).get("tenantName").equals("NHN Academy 경남")) {
-                    System.out.println("deviceinfo : " + jsonObj.get("deviceInfo"));
-                    System.out.println("object : " + jsonObj.get("object"));
-                    HashMap<String,String> value = (HashMap) jsonObj.get("object");
-                    if(value.containsKey("temperature"))
-                    System.out.println(value.get("temperature"));
+            if (jsonObj.containsKey("object")) {
+                // if (((JSONObject) jsonObj.get("deviceInfo")).get("tenantName").equals("NHN
+                // Academy 경남")) {
+                HashMap<String, String> deviceinfo = new HashMap<>();
+                HashMap<String, String> value = new HashMap<>();
+                for (Object key : ((JSONObject) jsonObj.get("deviceInfo")).keySet())
+                    deviceinfo.put(key.toString(), ((JSONObject) jsonObj.get("deviceInfo")).get(key).toString());
+                for (Object key : ((JSONObject) jsonObj.get("object")).keySet())
+                    value.put(key.toString(), ((JSONObject) jsonObj.get("object")).get(key).toString());
+                // System.out.println("deviceInfo : " + deviceinfo);
+                // System.out.println("value : " + value);
+                System.out.println("지사 : " + ((JSONObject) jsonObj.get("deviceInfo")).get("tenantName").toString());
+                for (String key : value.keySet()) {
+                    if (sensorList.contains(key)) {
+                        System.out.println(key.toString() + " : " + value.get(key));
+                    }
                 }
+                // }
+            }
         });
         while (!Thread.currentThread().isInterrupted()) {
             Thread.sleep(100);
