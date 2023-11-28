@@ -5,6 +5,10 @@ import org.json.simple.JSONObject;
 public class JsonMessage extends Message {
     JSONObject jsonObject;
 
+    public JsonMessage(JSONObject jsonObject) {
+        this.jsonObject = jsonObject;
+    }
+
     public JSONObject getJsonObject() {
         return jsonObject;
     }
