@@ -13,7 +13,12 @@ public class SystemOption {
         setInfo();
     }
 
-    public SystemOption getSystemOption() {
+    private void setInfo() {
+        applicationName = commandLine.split(" ")[1];
+        sensors = commandLine.split(" ")[3].split(",");
+    }
+
+    public static SystemOption getSystemOption() {
         if (systemOption == null) {
             systemOption = new SystemOption(DEFAULT);
         }
@@ -27,11 +32,6 @@ public class SystemOption {
         }
 
         return systemOption;
-    }
-
-    private void setInfo() {
-        applicationName = commandLine.split(" ")[1];
-        sensors = commandLine.split(" ")[3].split(",");
     }
 
     public String getApplicationNamme() {
