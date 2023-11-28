@@ -1,7 +1,7 @@
 package com.nhnacademy.system;
 
 public class SystemOption {
-    private SystemOption systemOption;
+    private static SystemOption systemOption;
 
     private static String DEFAULT = "--an \"application\" -s temperature,humidity";
     private String commandLine;
