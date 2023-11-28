@@ -18,7 +18,7 @@ public class SystemOption {
     private SystemOption(String[] args) {
         options = new Options();
         this.args = args;
-        options.addOption("-an", true, "application name");
+        options.addOption("an", "an", true, "application name");
         options.addOption("s", true, "sensor");
         setInfo();
     }
@@ -30,8 +30,8 @@ public class SystemOption {
         CommandLine commandLine;
         try {
             commandLine = parser.parse(options, this.args);
-            if (commandLine.hasOption("-an")) {
-                applicationName = commandLine.getOptionValue("-an");
+            if (commandLine.hasOption("an")) {
+                applicationName = commandLine.getOptionValue("an");
             }
             if (commandLine.hasOption("s")) {
                 sensors = commandLine.getOptionValue("s").split(",");
@@ -66,4 +66,5 @@ public class SystemOption {
         return sensors;
     }
 
+\
 }
