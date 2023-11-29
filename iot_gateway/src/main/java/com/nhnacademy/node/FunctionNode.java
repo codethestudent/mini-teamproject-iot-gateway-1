@@ -39,16 +39,17 @@ public class FunctionNode extends InputOutputNode {
                     for (String sensor : sensorList) {
                         if (value.containsKey(sensor)) {
                             JSONObject resultJson = new JSONObject();
-                            resultJson.put("topic", "data/s/"
+                            resultJson.put("topic",
+                            "data/s/"
                                     + ((JSONObject) (((JSONObject) jsonObj.get("deviceInfo")).get("tags")))
                                             .get("site")
                                             .toString()
-                                    + "/b" + ((JSONObject) jsonObj.get("deviceInfo")).get("tenantName").toString()
+                                    + "/b/" + ((JSONObject) jsonObj.get("deviceInfo")).get("tenantName").toString()
                                     + "/p/" + ((JSONObject) (((JSONObject) jsonObj.get("deviceInfo")).get("tags")))
                                             .get("place").toString()
                                     + "/n/" + ((JSONObject) jsonObj.get("deviceInfo")).get("deviceName").toString()
                                             .split("\\(")[0]
-                                    + "/e/" + sensor);
+                                    + "/ss/" + sensor+"/e/");
                             JSONObject payloadJson = new JSONObject();
                             payloadJson.put("time", System.currentTimeMillis());
                             payloadJson.put("value", value.get(sensor));
