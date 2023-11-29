@@ -28,11 +28,22 @@ public class MqttOutNode extends OutputNode {
     }
 
 
+    @Override
+    void preprocess() {
+    }
+
+    @Override
+    void process() {
+        sendToTelegraf();
+    }
+
+
     public void connectInputWire(int index, Wire wire) {
         super.connectInputWire(index, wire);
     }
 
 
+    
     public void sendToTelegraf() {
         try {
 
