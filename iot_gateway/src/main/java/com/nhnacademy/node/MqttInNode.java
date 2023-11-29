@@ -8,6 +8,8 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import com.nhnacademy.message.JsonMessage;
 import com.nhnacademy.system.SystemOption;
 import com.google.gson.JsonObject;
@@ -71,9 +73,10 @@ public class MqttInNode extends InputNode {
                 String messageStr = new String(msg.getPayload(), StandardCharsets.UTF_8);
 
                 try {
-                    jsonObject.put("topic", topic);
-                    jsonObject.put("payload", msg);
-                    JsonMessage messageObject = new JsonMessage(jsonObject);
+                    JSONParser parser = new JSONParser();
+                    Object obj = parser.parse(new String(msg.getPayload()));
+                    JSONObject jsonObj = (JSONObject) obj;
+                    JsonMessage messageObject = new JsonMessage(jsonObj);
                     output(messageObject);
 
                     // log.trace(jsonObject.toString());

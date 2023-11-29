@@ -21,41 +21,43 @@ public class FunctionNode extends InputOutputNode {
 
     @Override
     void process() {
-        for (Wire inputWire : inputWires) {
-            if (inputWire == null)
-                continue;
-            while (inputWire.hasMessage()) {
-                if (inputWire.get() instanceof JsonMessage) {
-                    JsonMessage message = (JsonMessage) inputWire.get();
+        for (int i = 0; i < getInputWireCount(); i++) {
+            if ((getInputWire(i) != null) && (getInputWire(i).hasMessage())) {
+                JsonMessage message = (JsonMessage) getInputWire(i).get();
+                if (message instanceof JsonMessage) {
                     JSONObject jsonObj = message.getJsonObject();
-                    HashMap<String, String> deviceinfo = new HashMap<>();
-                    HashMap<String, String> value = new HashMap<>();
-                    for (Object key : ((JSONObject) jsonObj.get("deviceInfo")).keySet())
-                        deviceinfo.put(key.toString(), ((JSONObject) jsonObj.get("deviceInfo")).get(key).toString());
-                    for (Object key : ((JSONObject) jsonObj.get("object")).keySet())
-                        value.put(key.toString(), ((JSONObject) jsonObj.get("object")).get(key).toString());
-                    for (String sensor : sensorList) {
-                        if (value.containsKey(sensor)) {
-                            JSONObject resultJson = new JSONObject();
-                            resultJson.put("topic",
-                            "data/s/"
-                                    + ((JSONObject) (((JSONObject) jsonObj.get("deviceInfo")).get("tags")))
-                                            .get("site")
-                                            .toString()
-                                    + "/b/" + ((JSONObject) jsonObj.get("deviceInfo")).get("tenantName").toString()
-                                    + "/p/" + ((JSONObject) (((JSONObject) jsonObj.get("deviceInfo")).get("tags")))
-                                            .get("place").toString()
-                                    + "/n/" + ((JSONObject) jsonObj.get("deviceInfo")).get("deviceName").toString()
-                                            .split("\\(")[0]
-                                    + "/ss/" + sensor+"/e/");
-                            JSONObject payloadJson = new JSONObject();
-                            payloadJson.put("time", System.currentTimeMillis());
-                            payloadJson.put("value", value.get(sensor));
-                            resultJson.put("payload", payloadJson);
-                            // System.out.println(resultJson);
-                            for (Wire outputWire : outputWires)
-                                if (outputWire != null)
-                                    outputWire.put(new JsonMessage(resultJson));
+                    if (jsonObj.containsKey("object")) {
+                        HashMap<String, String> deviceinfo = new HashMap<>();
+                        HashMap<String, String> value = new HashMap<>();
+                        for (Object key : ((JSONObject) jsonObj.get("deviceInfo")).keySet())
+                            deviceinfo.put(key.toString(),
+                                    ((JSONObject) jsonObj.get("deviceInfo")).get(key).toString());
+                        for (Object key : ((JSONObject) jsonObj.get("object")).keySet())
+                            value.put(key.toString(), ((JSONObject) jsonObj.get("object")).get(key).toString());
+                        for (String sensor : sensorList) {
+                            if (value.containsKey(sensor)) {
+                                JSONObject resultJson = new JSONObject();
+                                resultJson.put("topic",
+                                        "data/s/"
+                                                + ((JSONObject) (((JSONObject) jsonObj.get("deviceInfo")).get("tags")))
+                                                        .get("site")
+                                                        .toString()
+                                                + "/b/"
+                                                + ((JSONObject) jsonObj.get("deviceInfo")).get("tenantName").toString()
+                                                + "/p/"
+                                                + ((JSONObject) (((JSONObject) jsonObj.get("deviceInfo")).get("tags")))
+                                                        .get("place").toString()
+                                                + "/n/"
+                                                + ((JSONObject) jsonObj.get("deviceInfo")).get("deviceName").toString()
+                                                        .split("\\(")[0]
+                                                + "/ss/" + sensor + "/e/");
+                                JSONObject payloadJson = new JSONObject();
+                                payloadJson.put("time", System.currentTimeMillis());
+                                payloadJson.put("value", value.get(sensor));
+                                resultJson.put("payload", payloadJson);
+                                System.out.println(resultJson);
+                                output(new JsonMessage(resultJson));
+                            }
                         }
                     }
                 }
