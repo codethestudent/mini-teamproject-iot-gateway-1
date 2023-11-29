@@ -35,25 +35,35 @@ public class FunctionNode extends InputOutputNode {
                         for (Object key : ((JSONObject) jsonObj.get("object")).keySet())
                             value.put(key.toString(), ((JSONObject) jsonObj.get("object")).get(key).toString());
                         for (String sensor : sensorList) {
-                            if (value.containsKey(sensor)) {
+                            if (value.containsKey(sensor) && ((JSONObject) (((JSONObject) jsonObj.get("deviceInfo"))
+                                    .get("tags"))).containsKey("site")) {
                                 JSONObject resultJson = new JSONObject();
-                                resultJson.put("topic",
-                                        "data/s/"
-                                                + ((JSONObject) (((JSONObject) jsonObj.get("deviceInfo")).get("tags")))
-                                                        .get("site")
-                                                        .toString()
-                                                + "/b/"
-                                                + ((JSONObject) jsonObj.get("deviceInfo")).get("tenantName").toString()
-                                                + "/p/"
-                                                + ((JSONObject) (((JSONObject) jsonObj.get("deviceInfo")).get("tags")))
-                                                        .get("place").toString()
-                                                + "/n/"
-                                                + ((JSONObject) jsonObj.get("deviceInfo")).get("deviceName").toString()
-                                                        .split("\\(")[0]
-                                                + "/ss/" + sensor + "/e/");
+                                try {
+                                    resultJson.put("topic",
+                                            "data/s/"
+                                                    + ((JSONObject) (((JSONObject) jsonObj.get("deviceInfo"))
+                                                            .get("tags")))
+                                                            .get("site")
+                                                            .toString()
+                                                    + "/b/"
+                                                    + ((JSONObject) jsonObj.get("deviceInfo")).get("tenantName")
+                                                            .toString()
+                                                    + "/p/"
+                                                    + ((JSONObject) (((JSONObject) jsonObj.get("deviceInfo"))
+                                                            .get("tags")))
+                                                            .get("place").toString()
+                                                    + "/n/"
+                                                    + ((JSONObject) jsonObj.get("deviceInfo")).get("deviceName")
+                                                            .toString()
+                                                            .split("\\(")[0]
+                                                    + "/e/" + sensor);
+                                } catch (Exception e) {
+                                    System.out.println(jsonObj.toJSONString());
+                                }
+
                                 JSONObject payloadJson = new JSONObject();
                                 payloadJson.put("time", System.currentTimeMillis());
-                                payloadJson.put("value", value.get(sensor));
+                                payloadJson.put("value", Float.parseFloat(value.get(sensor)));
                                 resultJson.put("payload", payloadJson);
                                 System.out.println(resultJson);
                                 output(new JsonMessage(resultJson));
