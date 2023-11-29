@@ -65,35 +65,24 @@ public class MqttInNode extends InputNode {
 
             String topicDirectory = (sOptions.getApplicationNamme() != null ? sOptions.getApplicationNamme()
                     : "application");
-            String[] sensorType = (sOptions.getSensors() != null ? sOptions.getSensors()
-                    : new String[] { "temperature", "humidity", "co2" });
 
             client.subscribe(topicDirectory + "/+/device/+/event/up/#", (topic, msg) -> {
                 // Msg.getpayload() : 바이트 배열을 얻음
                 String messageStr = new String(msg.getPayload(), StandardCharsets.UTF_8);
 
                 try {
-                    JsonObject json = JsonParser.parseString(messageStr).getAsJsonObject();
-                    for (String sensor : sensorType) {
-                        // json.getAsJsonObject("토픽") : 아래 json 값을 가져오고 .has()는 키들을 추출함
-                        if (json.has("object") && json.getAsJsonObject("object").has(sensor)) {
-                            double value = json.getAsJsonObject("object").get(sensor).getAsDouble();
+                    jsonObject.put("topic", topic);
+                    jsonObject.put("payload", msg);
+                    JsonMessage messageObject = new JsonMessage(jsonObject);
+                    output(messageObject);
 
-                            log.info(sensor + " : " + value);
+                    // log.trace(jsonObject.toString());
 
-                            jsonObject.put("topic", topic);
-                            jsonObject.put("payload", msg);
-                            JsonMessage messageObject = new JsonMessage(jsonObject);
-                            output(messageObject);
-
-                            log.trace(jsonObject.toString());
-                        }
-                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-                log.info(topic + " : " + messageStr);
+                // log.info(topic + " : " + messageStr);
             });
 
         } catch (MqttException e) {

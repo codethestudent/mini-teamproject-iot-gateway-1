@@ -18,15 +18,11 @@ import org.json.simple.JSONObject;
 public class MqttOutNode extends OutputNode {
 
     private String broker;
-    private String topic;
 
-
-    public MqttOutNode(String name, int count, String broker, String topic) {
+    public MqttOutNode(String name, int count, String broker) {
         super(name, count);
         this.broker = broker;
-        this.topic = topic;
     }
-
 
     @Override
     void preprocess() {
@@ -37,13 +33,10 @@ public class MqttOutNode extends OutputNode {
         sendToTelegraf();
     }
 
-
     public void connectInputWire(int index, Wire wire) {
         super.connectInputWire(index, wire);
     }
 
-
-    
     public void sendToTelegraf() {
         try {
 
@@ -53,29 +46,22 @@ public class MqttOutNode extends OutputNode {
             options.setCleanSession(true);
             client.connect(options);
 
-
             Wire inputWire = getInputWire(0);
             if (inputWire != null) {
                 JSONObject jsonObject = new JSONObject();
                 while (inputWire.hasMessage()) {
                     Message message = inputWire.get();
 
-
                     if (message instanceof JsonMessage) {
                         JsonMessage jsonMessage = (JsonMessage) message;
                         JSONObject messageJsonObject = jsonMessage.getJsonObject();
 
-                        
-                        for (Object key : messageJsonObject.keySet()) {
-                            Object value = messageJsonObject.get(key);
-                            jsonObject.put(key.toString(), value);
-                        }
+                        client.publish(messageJsonObject.get("topic").toString(),
+                                new MqttMessage(messageJsonObject.get("payload").toString().getBytes()));
                     }
                 }
-                MqttMessage message = new MqttMessage(jsonObject.toJSONString().getBytes());
-                client.publish(topic, message);
-            }
 
+            }
 
             client.disconnect();
         } catch (Exception e) {

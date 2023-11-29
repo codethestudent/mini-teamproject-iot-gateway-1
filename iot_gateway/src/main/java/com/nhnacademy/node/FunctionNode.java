@@ -3,12 +3,10 @@ package com.nhnacademy.node;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.simple.JSONObject;
 
 import com.nhnacademy.message.JsonMessage;
-import com.nhnacademy.message.Message;
 import com.nhnacademy.wire.Wire;
 
 public class FunctionNode extends InputOutputNode {
@@ -16,7 +14,7 @@ public class FunctionNode extends InputOutputNode {
     static String[] sensors = { "temperature", "humidity" };
     static List<String> sensorList = Arrays.asList(sensors);
 
-    FunctionNode(int inCount, int outCount) {
+    public FunctionNode(int inCount, int outCount) {
         super(inCount, outCount);
         // TODO Auto-generated constructor stub
     }
