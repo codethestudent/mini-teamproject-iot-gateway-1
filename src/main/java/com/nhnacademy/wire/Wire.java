@@ -5,10 +5,10 @@ import java.util.Queue;
 
 import com.nhnacademy.message.Message;
 
-public class BufferedWire implements Wire {
+public class Wire {
     Queue<Message> messageQueue;
 
-    public BufferedWire() {
+    public Wire() {
         super();
         messageQueue = new LinkedList<>();
     }

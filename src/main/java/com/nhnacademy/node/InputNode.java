@@ -3,6 +3,7 @@ package com.nhnacademy.node;
 import com.nhnacademy.exception.AlreadyExistsException;
 import com.nhnacademy.exception.InvalidArgumentException;
 import com.nhnacademy.exception.OutOfBoundsException;
+import com.nhnacademy.message.JsonMessage;
 import com.nhnacademy.message.Message;
 import com.nhnacademy.wire.Wire;
 
