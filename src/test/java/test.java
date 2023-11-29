@@ -1,4 +1,3 @@
-package com.nhnacademy;
 
 import com.nhnacademy.node.FunctionNode;
 import com.nhnacademy.node.MqttInNode;

@@ -1,6 +1,5 @@
 package com.nhnacademy.node;
 
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import org.eclipse.paho.client.mqttv3.IMqttClient;
@@ -12,14 +11,11 @@ import org.json.simple.parser.JSONParser;
 
 import com.nhnacademy.message.JsonMessage;
 import com.nhnacademy.system.SystemOption;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MqttInNode extends InputNode {
-    private JSONObject jsonObject;
     private String[] args;
     private SystemOption sOptions;
     private IMqttClient client;
@@ -41,7 +37,6 @@ public class MqttInNode extends InputNode {
     void preprocess() {
         String publisherId;
         publisherId = UUID.randomUUID().toString();
-        jsonObject = new JSONObject();
 
         sOptions = SystemOption.getSystemOption(args);
         try {
@@ -70,8 +65,6 @@ public class MqttInNode extends InputNode {
 
             client.subscribe(topicDirectory + "/+/device/+/event/up/#", (topic, msg) -> {
                 // Msg.getpayload() : 바이트 배열을 얻음
-                String messageStr = new String(msg.getPayload(), StandardCharsets.UTF_8);
-
                 try {
                     JSONParser parser = new JSONParser();
                     Object obj = parser.parse(new String(msg.getPayload()));
@@ -79,13 +72,9 @@ public class MqttInNode extends InputNode {
                     JsonMessage messageObject = new JsonMessage(jsonObj);
                     output(messageObject);
 
-                    // log.trace(jsonObject.toString());
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                // log.info(topic + " : " + messageStr);
             });
 
         } catch (MqttException e) {
