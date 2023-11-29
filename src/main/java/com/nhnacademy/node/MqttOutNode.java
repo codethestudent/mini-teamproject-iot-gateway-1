@@ -4,6 +4,7 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 
 import com.nhnacademy.message.JsonMessage;
 import com.nhnacademy.message.Message;
@@ -23,7 +24,7 @@ public class MqttOutNode extends OutputNode {
     @Override
     void preprocess() {
         try {
-            client = new MqttClient(broker, MqttClient.generateClientId());
+            client = new MqttClient(broker, MqttClient.generateClientId(), new MqttDefaultFilePersistence("./target/trash"));
         } catch (MqttException e) {
             e.printStackTrace();
         }
