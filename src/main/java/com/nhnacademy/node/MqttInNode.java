@@ -6,6 +6,7 @@ import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -16,21 +17,17 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MqttInNode extends InputNode {
-    private String[] args;
     private SystemOption sOptions;
     private IMqttClient client;
+    private String[] args;
 
-    public MqttInNode(int count) {
+    public MqttInNode(int count, String[] args) {
         super(count);
-    }
-
-    public MqttInNode() {
-        this(1);
+        this.args = args;
     }
 
     public MqttInNode(String[] args) {
-        this(1);
-        this.args = args;
+        this(1, args);
     }
 
     @Override
@@ -40,7 +37,9 @@ public class MqttInNode extends InputNode {
 
         sOptions = SystemOption.getSystemOption(args);
         try {
-            client = new MqttClient("tcp://ems.nhnacademy.com:1883", publisherId);
+            client = new MqttClient(sOptions.getInputServerUri(), publisherId,
+                    new MqttDefaultFilePersistence("./target/trash"));
+
         } catch (MqttException e) {
             e.printStackTrace();
         }
