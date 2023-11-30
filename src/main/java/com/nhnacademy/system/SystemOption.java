@@ -3,7 +3,6 @@ package com.nhnacademy.system;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Iterator;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -20,6 +19,12 @@ public class SystemOption {
     private static SystemOption systemOption;
 
     private static final String DEFAULT_FILE_PATH = "src/main/resources/systemSetting.json";
+    private static final String KEY_TOPIC = "topic";
+    private static final String KEY_INPUT = "input";
+    private static final String KEY_AN = "applicationName";
+    private static final String KEY_SENSORS = "sensors";
+
+    private CommandLine commandLine;
 
     private String filePath;
     private JSONObject jsonFile;
@@ -45,70 +50,94 @@ public class SystemOption {
         options = new Options();
         options.addOption("c", false, "command line");
         options.addOption("an", "an", true, "application name");
-        options.addOption("s", true, "sensor");
-        options.addOption("t", true, "topic");
+        options.addOption("s", true, "setting sensor");
+        options.addOption("t", true, "setting topic");
 
-        JSONParser jsonParser = new JSONParser();
         CommandLineParser parser = new DefaultParser();
+        JSONObject input = getJSONFileValue(KEY_INPUT);
+
+        try {
+            commandLine = parser.parse(options, this.args);
+            if (args != null && commandLine.hasOption("c")) {
+                commandLineSetting(input);
+            } else {
+                jsonFileSetting(input);
+            }
+
+        } catch (ParseException e) {
+            log.error("command line parsing error");
+        }
+    }
+
+    private void commandLineSetting(JSONObject input) {
+
+        if (commandLine.hasOption("an")) {
+            applicationName = commandLine.getOptionValue("an");
+        } else if (input != null && input.containsKey(KEY_AN)) {
+            applicationName = (String) input.get(KEY_AN);
+        } else {
+            throw new NullPointerException("applicationName is null");
+        }
+
+        if (commandLine.hasOption("s")) {
+            sensors = commandLine.getOptionValue("s").split(",");
+        } else if (input != null && input.containsKey(KEY_SENSORS)) {
+            JSONArray sensorsArr = (JSONArray) input.get(KEY_SENSORS);
+            sensors = new String[sensorsArr.size()];
+
+            int index = 0;
+            for (Object sensorObj : sensorsArr) {
+                sensors[index++] = sensorObj.toString();
+            }
+
+        } else {
+            throw new NullPointerException("sensors is null");
+        }
+
+        if (commandLine.hasOption("t")) {
+            topic = commandLine.getOptionValue("t");
+        } else if (input != null && input.containsKey(KEY_TOPIC)) {
+            topic = (String) input.get(KEY_TOPIC);
+        } else {
+            throw new NullPointerException("topic is null");
+        }
+
+    }
+
+    private void jsonFileSetting(JSONObject input) {
+        if (input != null) {
+            topic = (String) input.get(KEY_TOPIC);
+            applicationName = (String) input.get(KEY_AN);
+            JSONArray sensorsArr = (JSONArray) input.get(KEY_SENSORS);
+            sensors = new String[sensorsArr.size()];
+
+            int index = 0;
+            for (Object sensorObj : sensorsArr) {
+                sensors[index++] = sensorObj.toString();
+            }
+        }
+    }
+
+    private JSONObject getJSONFileValue(String key) {
+        JSONParser jsonParser = new JSONParser();
+        JSONObject value = null;
         try {
             jsonFile = (JSONObject) jsonParser.parse(new FileReader(filePath));
 
-            JSONObject input;
-            if (jsonFile.containsKey("input")) {
-                input = (JSONObject) jsonFile.get("input");
+            if (jsonFile.containsKey(key)) {
+                if (jsonFile instanceof JSONObject) {
+                    value = (JSONObject) jsonFile.get(key);
+                } else {
+                    throw new IllegalArgumentException();
+                }
             } else {
-                throw new NullPointerException("input is null");
+                throw new NullPointerException("input is not exist");
             }
 
-            CommandLine commandLine = parser.parse(options, this.args);
-            if (args != null && commandLine.hasOption("c")) {
-                if (commandLine.hasOption("an")) {
-                    applicationName = commandLine.getOptionValue("an");
-                } else if (input.containsKey("applicationName")) {
-                    applicationName = (String) input.get("applicationName");
-                } else {
-                    throw new NullPointerException("applicationName is null");
-                }
-
-                if (commandLine.hasOption("s")) {
-                    sensors = commandLine.getOptionValue("s").split(",");
-                } else if (input.containsKey("sensors")) {
-                    JSONArray sensorsArr = (JSONArray) input.get("sensors");
-                    sensors = new String[sensorsArr.size()];
-
-                    int index = 0;
-                    Iterator<String> sensorsIter = sensorsArr.iterator();
-                    while (sensorsIter.hasNext()) {
-                        sensors[index++] = sensorsIter.next();
-                    }
-                } else {
-                    throw new NullPointerException("sensors is null");
-                }
-
-                if (commandLine.hasOption("t")) {
-                    topic = commandLine.getOptionValue("t");
-                } else if (input.containsKey("topic")) {
-                    topic = (String) input.get("topic");
-                } else {
-                    throw new NullPointerException("topic is null");
-                }
-
-            } else {
-                topic = (String) input.get("topic");
-                applicationName = (String) input.get("applicationName");
-                JSONArray sensorsArr = (JSONArray) input.get("sensors");
-                sensors = new String[sensorsArr.size()];
-
-                int index = 0;
-                Iterator<String> sensorsIter = sensorsArr.iterator();
-                while (sensorsIter.hasNext()) {
-                    sensors[index++] = sensorsIter.next();
-                }
-            }
-
-        } catch (ParseException | IOException | org.json.simple.parser.ParseException e) {
-            e.printStackTrace();
+        } catch (IOException | org.json.simple.parser.ParseException e) {
+            log.error("");
         }
+        return value;
     }
 
     public static SystemOption getSystemOption() {
@@ -152,7 +181,7 @@ public class SystemOption {
     }
 
     public String getInputServerUri() {
-        return (String) ((JSONObject) jsonFile.get("input")).get("server");
+        return (String) ((JSONObject) jsonFile.get(KEY_INPUT)).get("server");
     }
 
     public String getOutputServerUri() {
