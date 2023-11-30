@@ -59,7 +59,7 @@ public class MqttInNode extends InputNode {
                 client.connect(options);
             }
 
-            String topicDirectory = (sOptions.getApplicationNamme() != null ? sOptions.getApplicationNamme()
+            String topicDirectory = (sOptions.getApplicationName() != null ? sOptions.getApplicationName()
                     : "application");
 
             client.subscribe(topicDirectory + "/+/device/+/event/up/#", (topic, msg) -> {
