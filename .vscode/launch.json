@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "jsonlogtest",
+            "request": "launch",
+            "mainClass": "jsonlogtest",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
             "name": "Main",
             "request": "launch",
             "mainClass": "com.nhnacademy.Main",
