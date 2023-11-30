@@ -13,12 +13,12 @@ import com.nhnacademy.message.JsonMessage;
 import com.nhnacademy.message.Message;
 import com.nhnacademy.wire.Wire;
 
-public class LogsInputOutputNode extends InputOutputNode {
+public class JsonTest2 extends InputOutputNode {
 
     String path = "src/test/java/logs.json";
 
     // Fix constructor name
-    public LogsInputOutputNode(String name, int inCount, int outCount) {
+    public JsonTest2(String name, int inCount, int outCount) {
         super(name, inCount, outCount);
         // TODO Auto-generated constructor stub
     }
