@@ -7,7 +7,7 @@
             "humidity",
             "co2"
         ],
-        "server": "tcp://localhost"
+        "server": "tcp://ems.nhnacademy.com"
     },
     "output": {
         "server": "tcp://localhost"

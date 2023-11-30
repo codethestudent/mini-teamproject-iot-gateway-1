@@ -7,17 +7,29 @@ import java.util.List;
 import org.json.simple.JSONObject;
 
 import com.nhnacademy.message.JsonMessage;
+import com.nhnacademy.system.SystemOption;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class FunctionNode extends InputOutputNode {
-    static String application_name = "application";
-    static String[] sensors = { "temperature", "humidity" };
-    static List<String> sensorList = Arrays.asList(sensors);
+    static String[] sensors;
+    static List<String> sensorList;
 
     public FunctionNode(int inCount, int outCount) {
         super(inCount, outCount);
+    }
+
+    @Override
+    void preprocess() {
+        sensors = SystemOption.getSystemOption().getSensors();
+        sensorList = Arrays.asList(sensors);
+        log.info(id + " node start");
+    }
+
+    @Override
+    void postprocess() {
+        log.info(id + " node end");
     }
 
     @Override
@@ -25,6 +37,7 @@ public class FunctionNode extends InputOutputNode {
         for (int i = 0; i < getInputWireCount(); i++) {
             if ((getInputWire(i) != null) && (getInputWire(i).hasMessage())) {
                 JsonMessage message = (JsonMessage) getInputWire(i).get();
+                log.info(id + " received packet size : " + message.getJsonObject().size());
                 if (message instanceof JsonMessage) {
                     JSONObject jsonObj = message.getJsonObject();
                     if (jsonObj.containsKey("object")) {
@@ -58,6 +71,7 @@ public class FunctionNode extends InputOutputNode {
                                                     .split("\\(")[0]
                                             + "/e/" + sensor);
                                 } catch (Exception e) {
+                                    log.info(id + " error packet size : " + jsonObj.size());
                                     log.error(jsonObj.toJSONString());
                                 }
 
@@ -65,6 +79,7 @@ public class FunctionNode extends InputOutputNode {
                                 payloadJson.put("time", System.currentTimeMillis());
                                 payloadJson.put("value", Float.parseFloat(value.get(sensor)));
                                 resultJson.put("payload", payloadJson);
+                                log.info(id + " send packet size : " + resultJson.size());
                                 output(new JsonMessage(resultJson));
                             }
                         }

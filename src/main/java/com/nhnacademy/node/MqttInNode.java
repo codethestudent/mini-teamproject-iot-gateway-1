@@ -17,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MqttInNode extends InputNode {
-    private String[] args;
     private SystemOption sOptions;
     private IMqttClient client;
 
@@ -29,17 +28,12 @@ public class MqttInNode extends InputNode {
         this(1);
     }
 
-    public MqttInNode(String[] args) {
-        this(1);
-        this.args = args;
-    }
-
     @Override
     void preprocess() {
         String publisherId;
         publisherId = UUID.randomUUID().toString();
 
-        sOptions = SystemOption.getSystemOption(args);
+        sOptions = SystemOption.getSystemOption();
         try {
             client = new MqttClient("tcp://ems.nhnacademy.com:1883", publisherId,
                     new MqttDefaultFilePersistence("./target/trash"));
