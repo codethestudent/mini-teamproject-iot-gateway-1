@@ -10,7 +10,7 @@ public class jsonlogtest {
     
 
     public static void main(String[] args) {
-        MqttInNode mqttInNode = new MqttInNode();
+        MqttInNode mqttInNode = new MqttInNode(args);
         FunctionNode functionNode = new FunctionNode(1, 1);
         LogsInputOutputNode jsonNode = new LogsInputOutputNode("jsonNode", 1, 2);
         MqttOutNode mqttOutNode = new MqttOutNode("mqttOutNode", 2, "tcp://localhost");

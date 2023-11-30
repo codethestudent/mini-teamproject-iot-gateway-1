@@ -118,6 +118,8 @@ public class LogsInputOutputNode extends InputOutputNode {
         }
         jsonLog.put("place", placeValue);
 
+        jsonLog.put("id", jsonMessage.getId());
+
         return jsonLog;
     }
 
