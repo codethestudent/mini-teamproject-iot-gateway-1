@@ -19,13 +19,15 @@ import lombok.extern.slf4j.Slf4j;
 public class MqttInNode extends InputNode {
     private SystemOption sOptions;
     private IMqttClient client;
+    private String[] args;
 
-    public MqttInNode(int count) {
+    public MqttInNode(int count, String[] args) {
         super(count);
+        this.args = args;
     }
 
-    public MqttInNode() {
-        this(1);
+    public MqttInNode(String[] args) {
+        this(1, args);
     }
 
     @Override
@@ -33,9 +35,9 @@ public class MqttInNode extends InputNode {
         String publisherId;
         publisherId = UUID.randomUUID().toString();
 
-        sOptions = SystemOption.getSystemOption();
+        sOptions = SystemOption.getSystemOption(args);
         try {
-            client = new MqttClient("tcp://ems.nhnacademy.com:1883", publisherId,
+            client = new MqttClient(sOptions.getInputServerUri(), publisherId,
                     new MqttDefaultFilePersistence("./target/trash"));
 
         } catch (MqttException e) {

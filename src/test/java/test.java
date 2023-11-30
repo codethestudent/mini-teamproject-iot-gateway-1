@@ -6,7 +6,7 @@ import com.nhnacademy.wire.Wire;
 
 public class test {
     public static void main(String[] args) {
-        MqttInNode mqttInNode = new MqttInNode();
+        MqttInNode mqttInNode = new MqttInNode(args);
         FunctionNode functionNode = new FunctionNode(1, 1);
         MqttOutNode mqttOutNode = new MqttOutNode("mqttOutNode", 1, "tcp://localhost");
         Wire inTofun = new Wire();

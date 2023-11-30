@@ -31,10 +31,14 @@
             "mainClass": "test",
             "projectName": "iot_gateway",
             "args": [
+                "-c",
                 "--an",
                 "application",
                 "-s",
-                "temperature"
+                "temperature",
+                "humidity",
+                "co2",
+                "batteryLevel"
             ]
         }
     ]
