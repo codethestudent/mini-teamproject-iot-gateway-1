@@ -4,7 +4,7 @@ import org.json.simple.JSONObject;
 
 public class JsonMessage extends Message {
     JSONObject jsonObject;
-    String id;
+    String nodeName;
 
     public JsonMessage(JSONObject jsonObject) {
         this.jsonObject = jsonObject;
@@ -18,12 +18,12 @@ public class JsonMessage extends Message {
         this.jsonObject = jsonObject;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setNodeName(String nodeName) {
+        this.nodeName = nodeName;
     }
 
-    public String getId() {
-        return id;
+    public String getNodeName() {
+        return nodeName;
     }
 
 }
