@@ -1,5 +1,6 @@
 package com.nhnacademy.system;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
@@ -123,7 +124,13 @@ public class SystemOption {
 
     public static SystemOption getSystemOption(String[] args) {
         if (systemOption == null) {
-            systemOption = new SystemOption(args);
+            if (args[0] == "-c") {
+                systemOption = new SystemOption(args);
+            } else if ((new File(args[0])).exists()) {
+                getSystemOption(args[0]);
+            } else if (args[0].length() == 0) {
+                getSystemOption();
+            }
         }
 
         return systemOption;
