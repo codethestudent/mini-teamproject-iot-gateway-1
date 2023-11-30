@@ -123,14 +123,16 @@ public class SystemOption {
     }
 
     public static SystemOption getSystemOption(String[] args) {
-        if (systemOption == null) {
-            if (args[0] == "-c") {
+        if (systemOption == null && args.length > 0) {
+            if (args[0].equals("-c")) {
                 systemOption = new SystemOption(args);
             } else if ((new File(args[0])).exists()) {
                 getSystemOption(args[0]);
             } else if (args[0].length() == 0) {
                 getSystemOption();
             }
+        } else {
+            getSystemOption();
         }
 
         return systemOption;

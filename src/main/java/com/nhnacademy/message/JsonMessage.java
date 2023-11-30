@@ -26,4 +26,10 @@ public class JsonMessage extends Message {
         return nodeName;
     }
 
+    @Override
+    public String toString() {
+        return "node name : " + this.getNodeName() +
+                " , " + jsonObject.toJSONString();
+    }
+
 }
