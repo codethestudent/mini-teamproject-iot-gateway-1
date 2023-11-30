@@ -4,13 +4,6 @@ import com.nhnacademy.exception.OutOfBoundsException;
 import com.nhnacademy.message.Message;
 import com.nhnacademy.wire.Wire;
 
-import lombok.extern.slf4j.Slf4j;
-
-/*
- * input Wires = 
- * output Wires = 
- */
-@Slf4j
 public abstract class InputOutputNode extends ActiveNode {
     Wire[] inputWires;
     Wire[] outputWires;
