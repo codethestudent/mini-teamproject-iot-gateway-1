@@ -1,0 +1,18 @@
+{
+    "input": {
+        "topic": "application/#",
+        "applicationName": "+",
+        "sensors": [
+            "temperature",
+            "humidity",
+            "co2"
+        ],
+        "server": "tcp://localhost"
+    },
+    "output": {
+        "server": "tcp://localhost"
+    },
+    "operationStatus": {
+        "statusReportInterval": ""
+    }
+}
