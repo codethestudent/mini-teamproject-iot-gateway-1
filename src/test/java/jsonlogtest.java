@@ -1,6 +1,4 @@
 import com.nhnacademy.node.FunctionNode;
-import com.nhnacademy.node.JsonTest2;
-import com.nhnacademy.node.JsonTest2;
 import com.nhnacademy.node.LogsInputOutputNode;
 import com.nhnacademy.node.MqttInNode;
 import com.nhnacademy.node.MqttOutNode;
