@@ -36,6 +36,7 @@ public class SystemOption {
 
     private SystemOption(String[] args) {
         this.args = args;
+        filePath = DEFAULT_FILE_PATH;
         setInfo();
     }
 
@@ -142,7 +143,7 @@ public class SystemOption {
         return topic;
     }
 
-    public String getApplicationNamme() {
+    public String getApplicationName() {
         return applicationName;
     }
 
