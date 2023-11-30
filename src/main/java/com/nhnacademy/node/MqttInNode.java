@@ -67,10 +67,15 @@ public class MqttInNode extends InputNode {
                 try {
                     JSONParser parser = new JSONParser();
                     Object obj = parser.parse(new String(msg.getPayload()));
+                    if (!(obj instanceof JSONObject)) {
+                        throw new IllegalStateException();
+                    }
                     JSONObject jsonObj = (JSONObject) obj;
+                    log.trace(jsonObj.toString());
                     JsonMessage messageObject = new JsonMessage(jsonObj);
+                    messageObject.setNodeName("MqttInNode");
                     output(messageObject);
-
+                    log.info(messageObject.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
