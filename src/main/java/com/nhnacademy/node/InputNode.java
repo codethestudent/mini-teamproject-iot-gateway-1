@@ -6,7 +6,6 @@ import com.nhnacademy.exception.OutOfBoundsException;
 import com.nhnacademy.message.Message;
 import com.nhnacademy.wire.Wire;
 
-//socket in, std in
 public abstract class InputNode extends ActiveNode {
     Wire[] outputWires;
 
