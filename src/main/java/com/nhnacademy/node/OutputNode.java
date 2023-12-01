@@ -5,13 +5,9 @@ import com.nhnacademy.exception.InvalidArgumentException;
 import com.nhnacademy.exception.OutOfBoundsException;
 import com.nhnacademy.wire.Wire;
 
-// socket out, std out
 public abstract class OutputNode extends ActiveNode {
     Wire[] inputWires;
 
-    /*
-     * 추가된 부분
-     */
     OutputNode(String name, int count) {
         super(name);
         if (count <= 0) {
@@ -30,9 +26,6 @@ public abstract class OutputNode extends ActiveNode {
         inputWires = new Wire[count];
     }
 
-    /*
-     * 추가된 부분
-     */
     public void connectInputWire(int index, Wire wire) {
         if (inputWires.length <= index) {
             throw new OutOfBoundsException();

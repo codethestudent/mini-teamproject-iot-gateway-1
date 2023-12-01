@@ -1,16 +1,11 @@
-package com.nhnacademy;
 
 import com.nhnacademy.node.FunctionNode;
 import com.nhnacademy.node.MqttInNode;
 import com.nhnacademy.node.MqttOutNode;
-import com.nhnacademy.system.SystemOption;
 import com.nhnacademy.wire.Wire;
 
-public class Main {
+public class test {
     public static void main(String[] args) {
-        if (args.length != 0) {
-            SystemOption.getSystemOption(args);
-        }
         MqttInNode mqttInNode = new MqttInNode(args);
         FunctionNode functionNode = new FunctionNode(1, 1);
         MqttOutNode mqttOutNode = new MqttOutNode("mqttOutNode", 1, "tcp://localhost");

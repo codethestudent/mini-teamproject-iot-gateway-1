@@ -3,14 +3,9 @@ package com.nhnacademy.node;
 import com.nhnacademy.exception.AlreadyExistsException;
 import com.nhnacademy.exception.InvalidArgumentException;
 import com.nhnacademy.exception.OutOfBoundsException;
-import com.nhnacademy.message.JsonMessage;
 import com.nhnacademy.message.Message;
 import com.nhnacademy.wire.Wire;
 
-import lombok.extern.slf4j.Slf4j;
-
-//socket in, std in
-@Slf4j
 public abstract class InputNode extends ActiveNode {
     Wire[] outputWires;
 

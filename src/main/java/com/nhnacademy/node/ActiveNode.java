@@ -1,25 +1,25 @@
 package com.nhnacademy.node;
 
+/**
+ * ActiveNode는 스레드로 구현 됨 노드와 스레드를 구현(Extends, Implements)
+ * constructor 는 스레드 생성, 이름 지정.
+ */
 public abstract class ActiveNode extends Node implements Runnable {
-    // Active 노드에 필요한 추가 필드 (스레드, running, interval)
     Thread thread;
     boolean running;
     long interval = 1000;
 
-    // 생성하면 부모클래스 상속, thread 생성, 작동안함ss
     ActiveNode() {
         super();
         thread = new Thread(this, getId());
         running = false;
     }
 
-    // 이름을 지정해주는 생성자
     ActiveNode(String name) {
         this();
         setName(name);
     }
 
-    // 이름 getter setter
     @Override
     public String getName() {
         return thread.getName();
@@ -30,7 +30,6 @@ public abstract class ActiveNode extends Node implements Runnable {
         thread.setName(name);
     }
 
-    // Interval getter setter
     public long getInterval() {
         return interval;
     }
@@ -39,37 +38,28 @@ public abstract class ActiveNode extends Node implements Runnable {
         this.interval = interval;
     }
 
-    // start 메서드
     public void start() {
         thread.start();
     }
 
-    // stop 메서드
     public void stop() {
         running = false;
         thread.interrupt();
     }
 
-    // 전처리, 처리 , 후처리 메서드 (일단 빈 메서드로 구현)
     void preprocess() {
-        //
     }
 
     void process() {
-        //
     }
 
     void postprocess() {
-        //
     }
 
-    // run 메서드
     @Override
     public void run() {
-        // 전처리
         preprocess();
 
-        // 처리 (runningFlag 지정)
         running = true;
 
         long startTime = System.currentTimeMillis();
@@ -88,10 +78,8 @@ public abstract class ActiveNode extends Node implements Runnable {
                 }
             }
 
-            previousTime =
-                    startTime + (System.currentTimeMillis() - startTime) / interval * interval;
+            previousTime = startTime + (System.currentTimeMillis() - startTime) / interval * interval;
         }
-        // 후처리
         postprocess();
     }
 }
