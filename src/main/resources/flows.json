@@ -2,10 +2,8 @@
     {
         "id": "c956f0d458c0b340",
         "type": "mqtt in",
-        "name": "",
         "topic": "#",
-        "qos": "2",
-        "broker": "b00206de1c91a58a",
+        "server": "tcp://ems.nhnacademy.com:1883",
         "wires": [
             [
                 "5ccd1d18d2c7c94d"
@@ -15,24 +13,16 @@
     {
         "id": "5ccd1d18d2c7c94d",
         "type": "function",
-        "name": "data",
-        "libs": [],
         "wires": [
             [
-                "d808849e9790d2fd",
-                "1bfdc73bcc851982"
+                "f7a40ab60424b975"
             ]
         ]
     },
     {
         "id": "f7a40ab60424b975",
         "type": "mqtt out",
-        "name": "",
-        "topic": "",
-        "qos": "",
-        "retain": "",
-        "respTopic": "",
-        "broker": "08d00fc14b6bd3fc",
+        "server": "tcp://localhost",
         "wires": []
     }
 ]
