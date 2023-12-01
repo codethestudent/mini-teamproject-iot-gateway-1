@@ -13,7 +13,7 @@ public class jsonlogtest {
         MqttInNode mqttInNode = new MqttInNode(args);
         FunctionNode functionNode = new FunctionNode(1, 1);
         LogsInputOutputNode jsonNode = new LogsInputOutputNode("jsonNode", 1, 2);
-        MqttOutNode mqttOutNode = new MqttOutNode("mqttOutNode", 2, "tcp://localhost");
+        MqttOutNode mqttOutNode = new MqttOutNode("mqttOutNode", 2);
         Wire inTofun = new Wire();
         Wire funToout = new Wire();
         Wire jsonWire = new Wire();

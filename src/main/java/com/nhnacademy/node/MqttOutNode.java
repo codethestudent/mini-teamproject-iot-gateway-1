@@ -23,6 +23,7 @@ public class MqttOutNode extends OutputNode {
 
     private String broker;
     private MqttClient client;
+    private String path = "src/main/resources/systemSetting.json";
 
     public MqttOutNode(String name, int count) {
         super(name, count);
@@ -34,7 +35,7 @@ public class MqttOutNode extends OutputNode {
             JSONObject systemSettings;
 
             systemSettings =
-                    (JSONObject) jsonParser.parse(new FileReader("path/to/systemSetting.json"));
+                    (JSONObject) jsonParser.parse(new FileReader(path));
 
 
             JSONObject outputSettings = (JSONObject) systemSettings.get("output");
