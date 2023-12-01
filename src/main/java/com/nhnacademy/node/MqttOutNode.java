@@ -1,5 +1,9 @@
 package com.nhnacademy.node;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.ParseException;
+
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -8,23 +12,50 @@ import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 
 import com.nhnacademy.message.JsonMessage;
 import com.nhnacademy.message.Message;
+import com.nhnacademy.system.SystemOption;
 import com.nhnacademy.wire.Wire;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
+@Slf4j
 public class MqttOutNode extends OutputNode {
 
     private String broker;
     private MqttClient client;
 
-    public MqttOutNode(String name, int count, String broker) {
+    public MqttOutNode(String name, int count) {
         super(name, count);
-        this.broker = broker;
+
+        // this.broker = broker;
+
+        try {
+            JSONParser jsonParser = new JSONParser();
+            JSONObject systemSettings;
+
+            systemSettings =
+                    (JSONObject) jsonParser.parse(new FileReader("path/to/systemSetting.json"));
+
+
+            JSONObject outputSettings = (JSONObject) systemSettings.get("output");
+            if (outputSettings != null) {
+                Object serverValue = outputSettings.get("server");
+                if (serverValue != null) {
+                    this.broker = serverValue.toString();
+                }
+            }
+
+        } catch (IOException | org.json.simple.parser.ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     void preprocess() {
         try {
-            client = new MqttClient(broker, MqttClient.generateClientId(), new MqttDefaultFilePersistence("./target/trash"));
+            client = new MqttClient(broker, MqttClient.generateClientId(),
+                    new MqttDefaultFilePersistence("./target/trash"));
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -51,8 +82,8 @@ public class MqttOutNode extends OutputNode {
                         JsonMessage jsonMessage = (JsonMessage) message;
                         JSONObject messageJsonObject = jsonMessage.getJsonObject();
 
-                        client.publish(messageJsonObject.get("topic").toString(),
-                                new MqttMessage(messageJsonObject.get("payload").toString().getBytes()));
+                        client.publish(messageJsonObject.get("topic").toString(), new MqttMessage(
+                                messageJsonObject.get("payload").toString().getBytes()));
                     }
                 }
 
