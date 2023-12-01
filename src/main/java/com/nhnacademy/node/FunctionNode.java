@@ -32,6 +32,7 @@ public class FunctionNode extends InputOutputNode {
         log.info(id + " node end");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     void process() {
         for (int i = 0; i < getInputWireCount(); i++) {
