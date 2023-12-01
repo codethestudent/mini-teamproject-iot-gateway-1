@@ -23,17 +23,11 @@ MQTT 프로토콜을 이해하기 위한 IoT Gateway 만들기
   * 메서드 예시 :
     
 - JsonMessage
-  * 목적 : 각 노드들의 제이슨 메세지 오브젝트를 담아서 전송한다.
-  * 주요 기능 : 드들의 메세지 오브젝트와 메세지의 히스토리를 기록하여 전송한다.
-  * 메서드 예시 : getJsonObject(), getNodeName()
+  * 목적 : 
+  * 주요 기능 : 
+  * 메서드 예시 :
     
 - SystemOption
   * 목적 : 입력, 출력, 동작 상태 등을 설정하는 class
   * 주요 기능 : command line argument를 받아서 설정을 지정하거나 JSON file을 통해 설정을 지정하도록 한다.
   * 메서드 예시 : getApplicationName()
-
-
-- LogsInputOutputNode
-  * 목적 : 
-  * 주요 기능 : 
-  * 메서드 예시 :
