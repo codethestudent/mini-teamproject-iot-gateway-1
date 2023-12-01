@@ -14,13 +14,13 @@ import com.nhnacademy.message.JsonMessage;
 import com.nhnacademy.message.Message;
 import com.nhnacademy.wire.Wire;
 
-public class LogsInputOutputNode extends InputOutputNode {
+public class Debug extends OutputNode {
 
     String path = "src/test/java/logs.json";
-
+    String nodeName = "";
     // Fix constructor name
-    public LogsInputOutputNode(String name, int inCount, int outCount) {
-        super(name, inCount, outCount);
+    public Debug(String name, int inCount) {
+        super(name, inCount);
         // TODO Auto-generated constructor stub
     }
 
@@ -68,7 +68,7 @@ public class LogsInputOutputNode extends InputOutputNode {
                         // JSON 파일 쓰기
                         writeDataToFile(file, existingData);
 
-                        output(jsonMessage);
+                        
                     }
                 }
             }
@@ -118,7 +118,7 @@ public class LogsInputOutputNode extends InputOutputNode {
         }
         jsonLog.put("place", placeValue);
 
-        jsonLog.put("id", jsonMessage.getId());
+        jsonLog.put("id", this.getNodeName());
 
         return jsonLog;
     }
@@ -135,5 +135,13 @@ public class LogsInputOutputNode extends InputOutputNode {
         return 0; // 기본 값 또는 오류 처리에 맞게 반환
     }
 
+    public void setNodeName(String name){
+        this.nodeName = name;
+
+    }
+
+    public String getNodeName(){
+        return nodeName;
+    }
     
 }
