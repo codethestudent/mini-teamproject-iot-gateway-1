@@ -43,44 +43,49 @@ public class FunctionNode extends InputOutputNode {
                     if (jsonObj.containsKey("object")) {
                         HashMap<String, String> deviceinfo = new HashMap<>();
                         HashMap<String, String> value = new HashMap<>();
-                        for (Object key : ((JSONObject) jsonObj.get("deviceInfo")).keySet())
-                            deviceinfo.put(key.toString(),
-                                    ((JSONObject) jsonObj.get("deviceInfo")).get(key).toString());
-                        for (Object key : ((JSONObject) jsonObj.get("object")).keySet())
-                            value.put(key.toString(), ((JSONObject) jsonObj.get("object")).get(key).toString());
+                        if (jsonObj.containsKey("deviceInfo"))
+                            for (Object key : ((JSONObject) jsonObj.get("deviceInfo")).keySet())
+                                deviceinfo.put(key.toString(),
+                                        ((JSONObject) jsonObj.get("deviceInfo")).get(key).toString());
+                        if (jsonObj.containsKey("object"))
+                            for (Object key : ((JSONObject) jsonObj.get("object")).keySet())
+                                value.put(key.toString(), ((JSONObject) jsonObj.get("object")).get(key).toString());
                         for (String sensor : sensorList) {
-                            if (value.containsKey(sensor) && ((JSONObject) (((JSONObject) jsonObj.get("deviceInfo"))
-                                    .get("tags"))).containsKey("site")) {
-                                JSONObject resultJson = new JSONObject();
-                                try {
-                                    resultJson.put("topic", "data/s/"
-                                            + ((JSONObject) (((JSONObject) jsonObj.get("deviceInfo"))
-                                                    .get("tags")))
-                                                    .get("site")
-                                                    .toString()
-                                            + "/b/"
-                                            + ((JSONObject) jsonObj.get("deviceInfo")).get("tenantName")
-                                                    .toString()
-                                            + "/p/"
-                                            + ((JSONObject) (((JSONObject) jsonObj.get("deviceInfo"))
-                                                    .get("tags")))
-                                                    .get("place").toString()
-                                            + "/n/"
-                                            + ((JSONObject) jsonObj.get("deviceInfo")).get("deviceName")
-                                                    .toString()
-                                                    .split("\\(")[0]
-                                            + "/e/" + sensor);
-                                } catch (Exception e) {
-                                    log.info(id + " error packet size : " + jsonObj.size());
-                                    log.error(jsonObj.toJSONString());
-                                }
+                            if (value.containsKey(sensor)) {
+                                JSONObject forCheckJsonObject = ((JSONObject) (((JSONObject) jsonObj.get("deviceInfo"))
+                                        .get("tags")));
+                                if (forCheckJsonObject.containsKey("site") && forCheckJsonObject.containsKey("place")) {
+                                    JSONObject resultJson = new JSONObject();
+                                    try {
+                                        resultJson.put("topic", "data/s/"
+                                                + ((JSONObject) (((JSONObject) jsonObj.get("deviceInfo"))
+                                                        .get("tags")))
+                                                        .get("site")
+                                                        .toString()
+                                                + "/b/"
+                                                + ((JSONObject) jsonObj.get("deviceInfo")).get("tenantName")
+                                                        .toString()
+                                                + "/p/"
+                                                + ((JSONObject) (((JSONObject) jsonObj.get("deviceInfo"))
+                                                        .get("tags")))
+                                                        .get("place").toString()
+                                                + "/n/"
+                                                + ((JSONObject) jsonObj.get("deviceInfo")).get("deviceName")
+                                                        .toString()
+                                                        .split("\\(")[0]
+                                                + "/e/" + sensor);
+                                    } catch (Exception e) {
+                                        log.info(id + " error packet size : " + jsonObj.size());
+                                        log.error(jsonObj.toJSONString());
+                                    }
 
-                                JSONObject payloadJson = new JSONObject();
-                                payloadJson.put("time", System.currentTimeMillis());
-                                payloadJson.put("value", Float.parseFloat(value.get(sensor)));
-                                resultJson.put("payload", payloadJson);
-                                log.info(id + " send packet size : " + resultJson.size());
-                                output(new JsonMessage(resultJson));
+                                    JSONObject payloadJson = new JSONObject();
+                                    payloadJson.put("time", System.currentTimeMillis());
+                                    payloadJson.put("value", Float.parseFloat(value.get(sensor)));
+                                    resultJson.put("payload", payloadJson);
+                                    log.info(id + " send packet size : " + resultJson.size());
+                                    output(new JsonMessage(resultJson));
+                                }
                             }
                         }
                     }

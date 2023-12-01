@@ -13,21 +13,14 @@ public class Main {
             SystemOption.getSystemOption(args);
         }
         MqttInNode mqttInNode = new MqttInNode(args);
-        FunctionNode functionNode = new FunctionNode(1, 1);
-        MqttOutNode mqttOutNode = new MqttOutNode("mqttOutNode", 1, "tcp://localhost");
-        Wire inTofun = new Wire();
-        ContainsKeyNode containsKeyNode = new ContainsKeyNode(1, 1, new String[] { "object" });
-        mqttInNode.connectOutputWire(0, inTofun);
-        containsKeyNode.connectInputWire(0, inTofun);
-        mqttInNode.start();
-        containsKeyNode.start();
-        // Wire funToout = new Wire();
-        // mqttInNode.connectOutputWire(0, inTofun);
-        // functionNode.connectInputWire(0, inTofun);
-        // functionNode.connectOutputWire(0, funToout);
-        // mqttOutNode.connectInputWire(0, funToout);
-        // mqttInNode.start();
-        // functionNode.start();
-        // mqttOutNode.start();
+        Wire wire1 = new Wire();
+        ContainsKeyNode containsObject = new ContainsKeyNode(1, 1, "object");
+        mqttInNode.connectOutputWire(0, wire1);
+        containsObject.connectInputWire(0, wire1);
+        ContainsKeyNode containsDeviceInfo = new ContainsKeyNode(1, 1, "deviceInfo");
+        Wire wire2 = new Wire();
+        containsObject.connectOutputWire(0, wire2);
+        containsDeviceInfo.connectInputWire(0, wire2);
+
     }
 }
