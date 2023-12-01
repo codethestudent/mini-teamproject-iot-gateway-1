@@ -82,11 +82,11 @@ public class MqttInNode extends InputNode {
                         throw new IllegalStateException();
                     }
                     JSONObject jsonObj = (JSONObject) obj;
-                    log.trace(jsonObj.toString());
+                    // log.trace(jsonObj.toString());
                     JsonMessage messageObject = new JsonMessage(jsonObj);
                     messageObject.setNodeName("MqttInNode");
                     output(messageObject);
-                    log.info(messageObject.toString());
+                    // log.info(messageObject.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

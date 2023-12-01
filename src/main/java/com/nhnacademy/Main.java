@@ -1,5 +1,6 @@
 package com.nhnacademy;
 
+import com.nhnacademy.node.ContainsKeyNode;
 import com.nhnacademy.node.FunctionNode;
 import com.nhnacademy.node.MqttInNode;
 import com.nhnacademy.node.MqttOutNode;
@@ -15,13 +16,18 @@ public class Main {
         FunctionNode functionNode = new FunctionNode(1, 1);
         MqttOutNode mqttOutNode = new MqttOutNode("mqttOutNode", 1, "tcp://localhost");
         Wire inTofun = new Wire();
-        Wire funToout = new Wire();
+        ContainsKeyNode containsKeyNode = new ContainsKeyNode(1, 1, new String[] { "object" });
         mqttInNode.connectOutputWire(0, inTofun);
-        functionNode.connectInputWire(0, inTofun);
-        functionNode.connectOutputWire(0, funToout);
-        mqttOutNode.connectInputWire(0, funToout);
+        containsKeyNode.connectInputWire(0, inTofun);
         mqttInNode.start();
-        functionNode.start();
-        mqttOutNode.start();
+        containsKeyNode.start();
+        // Wire funToout = new Wire();
+        // mqttInNode.connectOutputWire(0, inTofun);
+        // functionNode.connectInputWire(0, inTofun);
+        // functionNode.connectOutputWire(0, funToout);
+        // mqttOutNode.connectInputWire(0, funToout);
+        // mqttInNode.start();
+        // functionNode.start();
+        // mqttOutNode.start();
     }
 }
