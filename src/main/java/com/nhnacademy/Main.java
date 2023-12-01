@@ -13,7 +13,7 @@ public class Main {
         }
         MqttInNode mqttInNode = new MqttInNode(args);
         FunctionNode functionNode = new FunctionNode(1, 1);
-        MqttOutNode mqttOutNode = new MqttOutNode("mqttOutNode", 1, "tcp://localhost");
+        MqttOutNode mqttOutNode = new MqttOutNode("mqttOutNode", 1);
         Wire inTofun = new Wire();
         Wire funToout = new Wire();
         mqttInNode.connectOutputWire(0, inTofun);
