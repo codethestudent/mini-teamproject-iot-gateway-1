@@ -20,6 +20,12 @@ public abstract class ActiveNode extends Node implements Runnable {
         setName(name);
     }
 
+    ActiveNode(String id, String name) {
+        super(id);
+        thread = new Thread(this, getId());
+        setName(name);
+    }
+
     @Override
     public String getName() {
         return thread.getName();
