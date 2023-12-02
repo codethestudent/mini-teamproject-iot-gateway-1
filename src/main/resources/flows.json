@@ -26,3 +26,81 @@
         "wires": []
     }
 ]
+{
+    "devAddr": "014bbad3",
+    "txInfo": {
+        "modulation": {
+            "lora": {
+                "spreadingFactor": 10,
+                "bandwidth": 125000,
+                "codeRate": "CR_4_5"
+            }
+        },
+        "frequency": 923300000
+    },
+    "fPort": 85,
+    "data": "A2frAARoIw==",
+    "deduplicationId": "997e0637-b2fb-4a65-8bc4-c6a50501e9d4",
+    "fCnt": 155964,
+    "confirmed": false,
+    "deviceInfo": {
+        "deviceClassEnabled": "CLASS_A",
+        "tenantName": "NHN Academy 경남",
+        "tenantId": "a3e5ac43-3f8a-45da-91a6-e07b18cc6646",
+        "deviceProfileId": "ddfa8f88-2bac-4f61-b95c-f488e6dff303",
+        "applicationId": "9a87910d-fc6c-4f10-a6fd-a626a1ca6b4a",
+        "deviceName": "서버실(EM300-TH-151368)",
+        "applicationName": "NHNAcademyEMS",
+        "devEui": "24e124136d151368",
+        "deviceProfileName": "EM300-TH-OTAA",
+        "tags": {
+            "site": "nhnacademy",
+            "name": "서버실",
+            "place": "server_room",
+            "branch": "gyeongnam"
+        }
+    },
+    "adr": true,
+    "dr": 2,
+    "rxInfo": [
+        {
+            "rssi": -48,
+            "metadata": {
+                "region_config_id": "kr920",
+                "region_common_name": "KR920"
+            },
+            "timeSinceGpsEpoch": "1385449910.666s",
+            "snr": 12.8,
+            "channel": 6,
+            "rfChain": 1,
+            "context": "E6aFHg==",
+            "uplinkId": 28405,
+            "location": {},
+            "time": "2023-12-01T07:11:32.666266+00:00",
+            "gatewayId": "24e124fffef5dccc",
+            "crcStatus": "CRC_OK"
+        },
+        {
+            "rssi": -61,
+            "metadata": {
+                "region_config_id": "kr920",
+                "region_common_name": "KR920"
+            },
+            "timeSinceGpsEpoch": "1385449910.035s",
+            "snr": 12.2,
+            "channel": 6,
+            "rfChain": 1,
+            "context": "SXFhyA==",
+            "uplinkId": 29593,
+            "location": {},
+            "time": "2023-12-01T07:11:32.035524+00:00",
+            "gatewayId": "24e124fffef79114",
+            "crcStatus": "CRC_OK"
+        }
+    ],
+    "time": "2023-12-01T07:11:32.666+00:00",
+    "object": {
+        "temperature": 23.5,
+        "humidity": 17.5
+    }
+}
