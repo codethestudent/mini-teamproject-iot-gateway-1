@@ -15,24 +15,17 @@ public abstract class ActiveNode extends Node implements Runnable {
         running = false;
     }
 
-    ActiveNode(String name) {
-        this();
-        setName(name);
-    }
-
-    ActiveNode(String id, String name) {
+    ActiveNode(String id) {
         super(id);
         thread = new Thread(this, getId());
-        setName(name);
+        running = false;
     }
 
-    @Override
-    public String getName() {
+    public String getThreadName() {
         return thread.getName();
     }
 
-    @Override
-    public void setName(String name) {
+    public void setThreadName(String name) {
         thread.setName(name);
     }
 

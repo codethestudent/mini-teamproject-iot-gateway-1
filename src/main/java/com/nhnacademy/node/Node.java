@@ -11,16 +11,19 @@ public abstract class Node {
 
     static int count;
     String id;
+    String name;
 
     Node() {
         count++;
         id = String.format("%s-%02d", getClass().getSimpleName(), count);
+        name = id;
         log.trace("create node : {}", id);
     }
 
-    Node(String id){
+    Node(String id) {
         count++;
         this.id = id;
+        name = id;
         log.trace("create node : {}", id);
     }
 
@@ -28,9 +31,13 @@ public abstract class Node {
         return id;
     }
 
-    public abstract String getName();
+    public String getName() {
+        return name;
+    }
 
-    public abstract void setName(String name);
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public static int getCount() {
         return count;

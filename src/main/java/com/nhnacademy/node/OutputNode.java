@@ -8,46 +8,46 @@ import com.nhnacademy.wire.Wire;
 public abstract class OutputNode extends ActiveNode {
     Wire[] inputWires;
 
-    OutputNode(String name, int count) {
-        super(name);
-        if (count <= 0) {
+    public OutputNode(String id, int wireCount) {
+        super(id);
+        if (wireCount <= 0) {
             throw new InvalidArgumentException();
         }
 
-        inputWires = new Wire[count];
+        inputWires = new Wire[wireCount];
     }
 
-    OutputNode(int count) {
+    public OutputNode(int wireCount) {
         super();
-        if (count <= 0) {
+        if (wireCount <= 0) {
             throw new InvalidArgumentException();
         }
 
-        inputWires = new Wire[count];
+        inputWires = new Wire[wireCount];
     }
 
-    public void connectInputWire(int index, Wire wire) {
-        if (inputWires.length <= index) {
+    public void connectInputWire(int wireIndex, Wire wire) {
+        if (inputWires.length <= wireIndex) {
             throw new OutOfBoundsException();
         }
 
-        if (inputWires[index] != null) {
+        if (inputWires[wireIndex] != null) {
             throw new AlreadyExistsException();
         }
 
-        inputWires[index] = wire;
+        inputWires[wireIndex] = wire;
     }
 
     public int getInputWireCount() {
         return inputWires.length;
     }
 
-    public Wire getInputWire(int index) {
-        if (index < 0 || inputWires.length <= index) {
+    public Wire getInputWire(int wireIndex) {
+        if (wireIndex < 0 || inputWires.length <= wireIndex) {
             throw new OutOfBoundsException();
         }
 
-        return inputWires[index];
+        return inputWires[wireIndex];
     }
 
 }

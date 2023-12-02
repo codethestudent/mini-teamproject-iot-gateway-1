@@ -1,6 +1,6 @@
 [
     {
-        "id": "61589838cc9b6216",
+        "id": "6535aab52d360a5f",
         "type": "tab",
         "label": "플로우 1",
         "disabled": false,
@@ -39,9 +39,9 @@
         "sessionExpiry": ""
     },
     {
-        "id": "b67f64f3d83e8863",
+        "id": "6f6a1ff23a7b7b78",
         "type": "mqtt in",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "",
         "topic": "application/#",
         "qos": "2",
@@ -55,15 +55,15 @@
         "y": 200,
         "wires": [
             [
-                "28550849d1c4ecd5",
-                "9e8f541800931187"
+                "6b095e735cce0c21",
+                "c022e1154bd70e94"
             ]
         ]
     },
     {
-        "id": "28550849d1c4ecd5",
+        "id": "6b095e735cce0c21",
         "type": "debug",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "debug 6",
         "active": false,
         "tosidebar": true,
@@ -78,9 +78,9 @@
         "wires": []
     },
     {
-        "id": "357d1532f1e409ce",
+        "id": "6f6204f4f7a07813",
         "type": "switch",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "nhnacademygyeongnam",
         "property": "payload.deviceInfo.tenantName",
         "propertyType": "msg",
@@ -94,103 +94,76 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 550,
+        "x": 570,
         "y": 240,
         "wires": [
             [
-                "14bf668bf461721d"
+                "f824fc8270cbcf5e"
             ]
         ]
     },
     {
-        "id": "9e8f541800931187",
+        "id": "c022e1154bd70e94",
         "type": "switch",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "object",
-        "property": "payload.payload",
+        "property": "payload",
         "propertyType": "msg",
         "rules": [
             {
-                "t": "cont",
+                "t": "hask",
                 "v": "object",
-                "vt": "msg"
+                "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 270,
+        "x": 250,
         "y": 240,
         "wires": [
             [
-                "3fa3546b054a934a"
+                "7f0906cb0296c727"
             ]
         ]
     },
     {
-        "id": "3fa3546b054a934a",
+        "id": "7f0906cb0296c727",
         "type": "switch",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "deviceinfo",
-        "property": "payload.payload",
+        "property": "payload",
         "propertyType": "msg",
         "rules": [
             {
-                "t": "cont",
+                "t": "hask",
                 "v": "deviceInfo",
-                "vt": "msg"
+                "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 380,
+        "x": 370,
         "y": 240,
         "wires": [
             [
-                "357d1532f1e409ce"
+                "6f6204f4f7a07813"
             ]
         ]
     },
     {
-        "id": "9aca887c036d9395",
-        "type": "change",
-        "z": "61589838cc9b6216",
-        "name": "insert tempPayload",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload.tempPayload",
-                "pt": "msg",
-                "to": "{}",
-                "tot": "json"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 230,
-        "y": 400,
-        "wires": [
-            [
-                "f31573752e4551dd"
-            ]
-        ]
-    },
-    {
-        "id": "14bf668bf461721d",
+        "id": "f824fc8270cbcf5e",
         "type": "switch",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "site",
-        "property": "payload.payload.deviceInfo.tags",
+        "property": "payload.deviceInfo.tags",
         "propertyType": "msg",
         "rules": [
             {
-                "t": "cont",
+                "t": "hask",
                 "v": "site",
-                "vt": "msg"
+                "vt": "str"
             }
         ],
         "checkall": "true",
@@ -200,22 +173,22 @@
         "y": 240,
         "wires": [
             [
-                "15c3baf0e257dd7d"
+                "44ce6cb688e4ba1f"
             ]
         ]
     },
     {
-        "id": "15c3baf0e257dd7d",
+        "id": "44ce6cb688e4ba1f",
         "type": "switch",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "branch",
-        "property": "payload.payload.deviceInfo.tags",
+        "property": "payload.deviceInfo.tags",
         "propertyType": "msg",
         "rules": [
             {
-                "t": "cont",
+                "t": "hask",
                 "v": "branch",
-                "vt": "msg"
+                "vt": "str"
             }
         ],
         "checkall": "true",
@@ -225,47 +198,47 @@
         "y": 240,
         "wires": [
             [
-                "dd6540a92a223abc"
+                "6c1cf9e339e5241f"
             ]
         ]
     },
     {
-        "id": "dd6540a92a223abc",
+        "id": "6c1cf9e339e5241f",
         "type": "switch",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "place",
-        "property": "payload.payload.deviceInfo.tags",
+        "property": "payload.deviceInfo.tags",
         "propertyType": "msg",
         "rules": [
             {
-                "t": "cont",
+                "t": "hask",
                 "v": "place",
-                "vt": "msg"
+                "vt": "str"
             }
         ],
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 90,
+        "x": 230,
         "y": 400,
         "wires": [
             [
-                "9aca887c036d9395"
+                "aaa36701814fcfb1"
             ]
         ]
     },
     {
-        "id": "713a90f38ffbccd6",
+        "id": "cf98819de3cff2ac",
         "type": "switch",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "has temperature",
-        "property": "payload.payload.object",
+        "property": "payload.object",
         "propertyType": "msg",
         "rules": [
             {
-                "t": "cont",
+                "t": "hask",
                 "v": "temperature",
-                "vt": "msg"
+                "vt": "str"
             }
         ],
         "checkall": "true",
@@ -275,22 +248,22 @@
         "y": 340,
         "wires": [
             [
-                "542960d69164937e"
+                "b50d13f23ed7e861"
             ]
         ]
     },
     {
-        "id": "2c2f54c285570b75",
+        "id": "b5293709b0ef1738",
         "type": "switch",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "has humidity",
-        "property": "payload.payload.object",
+        "property": "payload.object",
         "propertyType": "msg",
         "rules": [
             {
-                "t": "cont",
+                "t": "hask",
                 "v": "humidity",
-                "vt": "msg"
+                "vt": "str"
             }
         ],
         "checkall": "true",
@@ -300,14 +273,14 @@
         "y": 460,
         "wires": [
             [
-                "87ea33b44339fef7"
+                "68fb778d62d0dd5c"
             ]
         ]
     },
     {
-        "id": "f31573752e4551dd",
+        "id": "aaa36701814fcfb1",
         "type": "change",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "insert time",
         "rules": [
             {
@@ -327,15 +300,15 @@
         "y": 400,
         "wires": [
             [
-                "713a90f38ffbccd6",
-                "2c2f54c285570b75"
+                "cf98819de3cff2ac",
+                "b5293709b0ef1738"
             ]
         ]
     },
     {
-        "id": "68bd0201feb07479",
+        "id": "789897d82e6496c7",
         "type": "debug",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "debug 8",
         "active": false,
         "tosidebar": true,
@@ -350,9 +323,9 @@
         "wires": []
     },
     {
-        "id": "542960d69164937e",
+        "id": "b50d13f23ed7e861",
         "type": "change",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "insert temperature",
         "rules": [
             {
@@ -373,14 +346,14 @@
         "y": 340,
         "wires": [
             [
-                "3b65d4958322489f"
+                "5125d979120e4eff"
             ]
         ]
     },
     {
-        "id": "3b65d4958322489f",
+        "id": "5125d979120e4eff",
         "type": "template",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "",
         "field": "payload.tempPayload.topic",
         "fieldType": "msg",
@@ -392,14 +365,14 @@
         "y": 340,
         "wires": [
             [
-                "151fdb3154b2693e"
+                "958bc2cd7f807203"
             ]
         ]
     },
     {
-        "id": "151fdb3154b2693e",
+        "id": "958bc2cd7f807203",
         "type": "change",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "add topic",
         "rules": [
             {
@@ -420,14 +393,14 @@
         "y": 340,
         "wires": [
             [
-                "d1cea4ebd1c93d74"
+                "be19cced45b24e03"
             ]
         ]
     },
     {
-        "id": "d1cea4ebd1c93d74",
+        "id": "be19cced45b24e03",
         "type": "change",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "set payload",
         "rules": [
             {
@@ -448,15 +421,15 @@
         "y": 340,
         "wires": [
             [
-                "68bd0201feb07479",
-                "199f1ab8e161a28d"
+                "789897d82e6496c7",
+                "d53e22de46b9ad2f"
             ]
         ]
     },
     {
-        "id": "199f1ab8e161a28d",
+        "id": "d53e22de46b9ad2f",
         "type": "mqtt out",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "",
         "topic": "",
         "qos": "",
@@ -472,9 +445,9 @@
         "wires": []
     },
     {
-        "id": "87ea33b44339fef7",
+        "id": "68fb778d62d0dd5c",
         "type": "change",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "insert temperature",
         "rules": [
             {
@@ -495,14 +468,14 @@
         "y": 460,
         "wires": [
             [
-                "2e95d8d6e77c67c8"
+                "74a870add087be47"
             ]
         ]
     },
     {
-        "id": "2e95d8d6e77c67c8",
+        "id": "74a870add087be47",
         "type": "template",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "",
         "field": "payload.tempPayload.topic",
         "fieldType": "msg",
@@ -514,14 +487,14 @@
         "y": 460,
         "wires": [
             [
-                "807eaf5b42b5be30"
+                "ce157a7394b2f440"
             ]
         ]
     },
     {
-        "id": "807eaf5b42b5be30",
+        "id": "ce157a7394b2f440",
         "type": "change",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "add topic",
         "rules": [
             {
@@ -542,14 +515,14 @@
         "y": 460,
         "wires": [
             [
-                "8186c3c4539d4f51"
+                "8b63b943a81cc105"
             ]
         ]
     },
     {
-        "id": "8186c3c4539d4f51",
+        "id": "8b63b943a81cc105",
         "type": "change",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "set payload",
         "rules": [
             {
@@ -570,15 +543,15 @@
         "y": 460,
         "wires": [
             [
-                "199f1ab8e161a28d",
-                "6f45365bed8569c7"
+                "d53e22de46b9ad2f",
+                "83dbb7b87aa06ca7"
             ]
         ]
     },
     {
-        "id": "6f45365bed8569c7",
+        "id": "83dbb7b87aa06ca7",
         "type": "debug",
-        "z": "61589838cc9b6216",
+        "z": "6535aab52d360a5f",
         "name": "debug 9",
         "active": true,
         "tosidebar": true,

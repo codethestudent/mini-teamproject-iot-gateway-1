@@ -4,7 +4,6 @@ import org.json.simple.JSONObject;
 
 public class JsonMessage extends Message {
     JSONObject jsonObject;
-    String nodeName;
 
     public JsonMessage(JSONObject jsonObject) {
         this.jsonObject = jsonObject;
@@ -18,18 +17,15 @@ public class JsonMessage extends Message {
         this.jsonObject = jsonObject;
     }
 
-    public void setNodeName(String nodeName) {
-        this.nodeName = nodeName;
+    public Object getPayload() {
+        if (jsonObject.get("payload") == null)
+            return "Undefined";
+        return jsonObject.get("payload");
     }
 
-    public String getNodeName() {
-        return nodeName;
+    public String getTopic() {
+        if (jsonObject.get("topic") == null)
+            return "Undefined";
+        return jsonObject.get("topic").toString();
     }
-
-    @Override
-    public String toString() {
-        return "node name : " + this.getNodeName() +
-                " , " + jsonObject.toJSONString();
-    }
-
 }

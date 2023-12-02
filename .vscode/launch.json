@@ -6,6 +6,55 @@
     "configurations": [
         {
             "type": "java",
+            "name": "SwitchNode",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.node.SwitchNode",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
+            "name": "MqttOutNode",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.node.MqttOutNode",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
+            "name": "MqttInNode",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.node.MqttInNode",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
+            "name": "MqttInNode",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.NodeRED.MqttInNode",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
+            "name": "MqttBroker",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.node.MqttBroker",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
+            "name": "InputOutputNode",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.node.InputOutputNode",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
+            "name": "DebugNode",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.node.DebugNode",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
             "name": "ChangeNode",
             "request": "launch",
             "mainClass": "com.nhnacademy.node.ChangeNode",
