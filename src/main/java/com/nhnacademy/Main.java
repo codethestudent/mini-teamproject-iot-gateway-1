@@ -9,8 +9,10 @@ import com.nhnacademy.node.ChangeNode;
 import com.nhnacademy.node.DebugNode;
 import com.nhnacademy.node.MqttInNode;
 import com.nhnacademy.node.SwitchNode;
+import com.nhnacademy.node.TemplateNode;
 import com.nhnacademy.node.DebugNode.targetType;
 import com.nhnacademy.node.SwitchNode.propertyType;
+import com.nhnacademy.node.TemplateNode.fieldType;
 import com.nhnacademy.wire.Wire;
 
 public class Main {
@@ -159,6 +161,29 @@ public class Main {
         Wire wire9 = new Wire();
         switchNode7.connectOutputWire(0, 0, wire9);
         changeNode2.connectInputWire(0, wire9);
+        TemplateNode templateNode = new TemplateNode(1, 1, "payload.tempPayload.topic", fieldType.msg,
+                "data/s/{{payload.deviceInfo.tags.site}}/b/{{payload.deviceInfo.tenantName}}/p/{{payload.deviceInfo.tags.place}}/n/{{payload.deviceInfo.deviceName}}/e/temperature");
+        Wire wire12 = new Wire();
+        changeNode2.connectOutputWire(0, 0, wire12);
+        templateNode.connectInputWire(0, wire12);
+        ChangeNode changeNode4 = new ChangeNode("set topic", 1, 1, 1, new JSONArray() {
+            {
+                add(new JSONObject() {
+                    {
+                        put("t", "set");
+                        put("p", "topic");
+                        put("pt", "msg");
+                        put("to", "payload.tempPayload.topic");
+                        put("tot", "msg");
+                        put("dc", true);
+                    }
+                });
+            }
+        });
+        Wire wire10 = new Wire();
+        templateNode.connectOutputWire(0, 0, wire10);
+        changeNode4.connectInputWire(0, wire10);
+
         ChangeNode changeNode3 = new ChangeNode("set payload", 1, 1, 1, new JSONArray() {
             {
                 add(new JSONObject() {
@@ -173,9 +198,10 @@ public class Main {
                 });
             }
         });
-        Wire wire10 = new Wire();
-        changeNode2.connectOutputWire(0, 0, wire10);
-        changeNode3.connectInputWire(0, wire10);
+        Wire wire13 = new Wire();
+        changeNode4.connectOutputWire(0, 0, wire13);
+        changeNode3.connectInputWire(0, wire13);
+
         DebugNode debugNode = new DebugNode("debug", 1, true, true, true, true, targetType.full, "true");
         Wire wire11 = new Wire();
         changeNode3.connectOutputWire(0, 0, wire11);
@@ -192,5 +218,7 @@ public class Main {
         changeNode2.start();
         changeNode3.start();
         debugNode.start();
+        templateNode.start();
+        changeNode4.start();
     }
 }

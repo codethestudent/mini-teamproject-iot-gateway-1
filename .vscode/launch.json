@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "templateNode",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.node.templateNode",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
             "name": "UndefinedJsonObject",
             "request": "launch",
             "mainClass": "com.nhnacademy.system.UndefinedJsonObject",

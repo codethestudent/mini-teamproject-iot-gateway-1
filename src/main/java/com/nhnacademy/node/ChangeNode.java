@@ -6,7 +6,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.nhnacademy.exception.JSONMessageTypeException;
-import com.nhnacademy.exception.NonObjectTypeException;
+import com.nhnacademy.exception.NonJSONObjectTypeException;
 import com.nhnacademy.exception.PropertyEmptyException;
 import com.nhnacademy.exception.RulesFormatViolationException;
 import com.nhnacademy.message.JsonMessage;
@@ -125,9 +125,9 @@ public class ChangeNode extends InputOutputNode {
         }
     }
 
-    void checkJsonDestAvailable(JSONObject jsonObject, String[] keys) throws NonObjectTypeException {
+    void checkJsonDestAvailable(JSONObject jsonObject, String[] keys) throws NonJSONObjectTypeException {
         if (!(jsonObject instanceof JSONObject)) {
-            throw new NonObjectTypeException();
+            throw new NonJSONObjectTypeException();
         }
         JSONObject destJsonObject = jsonObject;
         for (int i = 0; i < keys.length; i++) {
@@ -139,7 +139,7 @@ public class ChangeNode extends InputOutputNode {
                 break;
             }
             if (!(destJsonObject.get(key) instanceof JSONObject)) {
-                throw new NonObjectTypeException();
+                throw new NonJSONObjectTypeException();
             }
             destJsonObject = (JSONObject) destJsonObject.get(key);
         }
@@ -224,7 +224,7 @@ public class ChangeNode extends InputOutputNode {
                             } else if (rule.get("t").equals("delete")) {
                                 // 미구현
                             }
-                        } catch (NonObjectTypeException e) {
+                        } catch (NonJSONObjectTypeException e) {
                             log.info("Cannot set property of non-object type: " + rule.get("p"));
                         } catch (PropertyEmptyException e) {
                             log.info("property is empty");
