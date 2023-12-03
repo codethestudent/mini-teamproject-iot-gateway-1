@@ -31,6 +31,10 @@ public class MqttInNode extends InputNode {
         this.broker = broker;
     }
 
+    public void setBroker(Broker broker) {
+        this.broker = broker;
+    }
+
     public void connectOutputWire(int outWireIndex, Wire wire) {
         if (getOutputWireCount() <= outWireIndex || outWireIndex < 0) {
             throw new OutOfBoundsException();

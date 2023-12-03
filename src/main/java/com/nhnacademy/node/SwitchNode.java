@@ -23,30 +23,30 @@ public class SwitchNode extends InputOutputNode {
     private propertyType type;
     private JSONArray rules;
     private Boolean checkall;
-    private int outputs;
+    // private int outputs;
 
     public SwitchNode(String id, int inWireCount, int outCount, int outWireCount, String property, propertyType type,
-            JSONArray rules, Boolean checkall, int outpus)
+            JSONArray rules, Boolean checkall)
             throws RulesFormatViolationException, PropertyEmptyException {
         super(id, inWireCount, outCount, outWireCount);
         this.property = property;
         this.type = type;
         this.rules = rules;
         this.checkall = checkall;
-        this.outputs = outpus;
+        // this.outputs = outpus;
         checkRules();
         propertys = splitProperts(property);
     }
 
     public SwitchNode(int inWireCount, int outCount, int outWireCount, String property, propertyType type,
-            JSONArray rules, Boolean checkall, int outpus)
+            JSONArray rules, Boolean checkall)
             throws RulesFormatViolationException, PropertyEmptyException {
         super(inWireCount, outCount, outWireCount);
         this.property = property;
         this.type = type;
         this.rules = rules;
         this.checkall = checkall;
-        this.outputs = outpus;
+        // this.outputs = outpus;
         checkRules();
         propertys = splitProperts(property);
     }
@@ -119,9 +119,9 @@ public class SwitchNode extends InputOutputNode {
         return checkall;
     }
 
-    public int getOutputs() {
-        return outputs;
-    }
+    // public int getOutputs() {
+    //     return outputs;
+    // }
 
     @Override
     void process() {

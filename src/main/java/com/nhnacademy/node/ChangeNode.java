@@ -235,18 +235,4 @@ public class ChangeNode extends InputOutputNode {
             }
         }
     }
-
-    public static void main(String[] args) throws ParseException {
-        JSONObject messageJsonObject = new JSONObject();
-        JSONObject t = new JSONObject() {
-            {
-                put("a", "b");
-            }
-        };
-        messageJsonObject.put("a", t);
-        messageJsonObject = (JSONObject) messageJsonObject.clone();
-        System.out.println(messageJsonObject);
-        t.put("a", "c");
-        System.out.println(messageJsonObject);
-    }
 }

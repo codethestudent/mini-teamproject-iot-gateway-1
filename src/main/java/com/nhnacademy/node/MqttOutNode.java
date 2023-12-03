@@ -26,6 +26,15 @@ public class MqttOutNode extends OutputNode {
         this.qos = qos;
     }
 
+    public MqttOutNode(String id, int wireCount, Broker broker) {
+        super(id, wireCount);
+        this.broker = broker;
+    }
+
+    public void setBroker(Broker broker) {
+        this.broker = broker;
+    }
+
     @Override
     void preprocess() {
         // TODO Auto-generated method stub
@@ -44,8 +53,8 @@ public class MqttOutNode extends OutputNode {
                     continue;
                 JsonMessage jsonMessage = (JsonMessage) message;
                 try {
-                    broker.getClient().publish(topic,
-                            new MqttMessage(jsonMessage.getJsonObject().toJSONString().getBytes()));
+                    broker.getClient().publish(jsonMessage.getTopic().toString(),
+                            new MqttMessage(jsonMessage.getPayload().toString().getBytes()));
                 } catch (MqttException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();

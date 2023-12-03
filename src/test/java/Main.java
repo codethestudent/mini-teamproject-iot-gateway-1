@@ -1,4 +1,4 @@
-package com.nhnacademy;
+
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.simple.JSONArray;
@@ -35,7 +35,7 @@ public class Main {
                     }
                 });
             }
-        }, true, 1);
+        }, true);
         SwitchNode switchNode2 = new SwitchNode("deviceinfo", 1, 1, 1, "payload", propertyType.msg, new JSONArray() {
             {
                 add(new JSONObject() {
@@ -46,7 +46,7 @@ public class Main {
                     }
                 });
             }
-        }, true, 1);
+        }, true);
         Wire wire1 = new Wire();
         Wire wire2 = new Wire();
         mqttInNode.connectOutputWire(0, wire1);
@@ -64,7 +64,7 @@ public class Main {
                             }
                         });
                     }
-                }, true, 1);
+                }, true);
         Wire wire3 = new Wire();
         switchNode2.connectOutputWire(0, 0, wire3);
         switchNode3.connectInputWire(0, wire3);
@@ -79,7 +79,7 @@ public class Main {
                             }
                         });
                     }
-                }, true, 1);
+                }, true);
         Wire wire4 = new Wire();
         switchNode3.connectOutputWire(0, 0, wire4);
         switchNode4.connectInputWire(0, wire4);
@@ -94,7 +94,7 @@ public class Main {
                             }
                         });
                     }
-                }, true, 1);
+                }, true);
         Wire wire5 = new Wire();
         switchNode4.connectOutputWire(0, 0, wire5);
         switchNode5.connectInputWire(0, wire5);
@@ -109,7 +109,7 @@ public class Main {
                             }
                         });
                     }
-                }, true, 1);
+                }, true);
         Wire wire6 = new Wire();
         switchNode5.connectOutputWire(0, 0, wire6);
         switchNode6.connectInputWire(0, wire6);
@@ -140,7 +140,7 @@ public class Main {
                             }
                         });
                     }
-                }, true, 1);
+                }, true);
         Wire wire8 = new Wire();
         changeNode1.connectOutputWire(0, 0, wire8);
         switchNode7.connectInputWire(0, wire8);

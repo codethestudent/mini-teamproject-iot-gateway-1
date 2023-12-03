@@ -27,12 +27,22 @@ public class Broker {
         this.keepAlive = keepAlive;
         this.cleansession = cleansession;
         setOption();
+        try {
+            connect();
+        } catch (MqttException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     void setOption() {
         options.setAutomaticReconnect(autoConnect);
         options.setCleanSession(cleansession);
         options.setKeepAliveInterval(keepAlive);
+    }
+
+    public String getId(){
+        return id;
     }
 
     public void connect() throws MqttException {
