@@ -35,9 +35,6 @@ public class SwitchNode extends InputOutputNode {
         this.checkall = checkall;
         this.outputs = outpus;
         checkRules();
-        if (property == null || property.equals("")) {
-            throw new PropertyEmptyException();
-        }
         propertys = splitProperts(property);
     }
 
@@ -51,19 +48,11 @@ public class SwitchNode extends InputOutputNode {
         this.checkall = checkall;
         this.outputs = outpus;
         checkRules();
-        if (property == null || property.equals("")) {
-            throw new PropertyEmptyException();
-        }
         propertys = splitProperts(property);
     }
 
     void checkRules() throws RulesFormatViolationException {
-        if (this.rules == null) {
-            throw new RulesFormatViolationException("rules is null");
-        }
-        if (this.rules.size() == 0) {
-            throw new RulesFormatViolationException("rules is empty");
-        }
+
         for (Object rule : this.rules) {
             if (!(rule instanceof JSONObject)) {
                 throw new RulesFormatViolationException("rule is not JSONObject");
@@ -75,7 +64,8 @@ public class SwitchNode extends InputOutputNode {
             if (!(ruleObj.get("t") instanceof String)) {
                 throw new RulesFormatViolationException("t is not String");
             }
-            if (!(ruleObj.get("t").equals("eq") || ruleObj.get("t").equals("cont") || ruleObj.get("t").equals("hask"))) {
+            if (!(ruleObj.get("t").equals("eq") || ruleObj.get("t").equals("cont")
+                    || ruleObj.get("t").equals("hask"))) {
                 throw new RulesFormatViolationException("t is not eq or cont or hask");
             }
             if (!ruleObj.containsKey("v")) {
@@ -145,7 +135,7 @@ public class SwitchNode extends InputOutputNode {
                     }
                     JSONObject destJsonObject = UndefinedJsonObject
                             .getDestJsonObject(((JsonMessage) message).getJsonObject(), propertys);
-                    for (int j = 0; j < getOutputs(); j++) {
+                    for (int j = 0; j < rules.size(); j++) {
                         JSONObject rule = (JSONObject) rules.get(j);
                         if (rule.get("t").equals("eq")) {
                             if (rule.get("vt").equals("str")) {
@@ -162,7 +152,25 @@ public class SwitchNode extends InputOutputNode {
                                 }
                             }
                         } else if (rule.get("t").equals("cont")) {
-
+                            //미구현
+                        } else if (rule.get("t").equals("hask")) {
+                            if (rule.get("vt").equals("str")) {
+                                if (((JSONObject) destJsonObject.get(propertys[propertys.length - 1]))
+                                        .containsKey(rule.get("v"))) {
+                                    output(j, message);
+                                } else if (rule.get("vt").equals("msg")) {
+                                    // String[] v = splitProperts(rule.get("v").toString());
+                                    // JSONObject messageDestJsonObject = UndefinedJsonObject
+                                    // .getDestJsonObject(((JsonMessage) message).getJsonObject(), v);
+                                    // if (messageDestJsonObject instanceof UndefinedJsonObject) {
+                                    // continue;
+                                    // }
+                                    // if (destJsonObject
+                                    // .containsKey(messageDestJsonObject.get(v[v.length - 1].toString()))) {
+                                    // output(j, message);
+                                    // }
+                                }
+                            }
                         }
                     }
 

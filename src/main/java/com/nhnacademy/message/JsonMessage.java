@@ -1,6 +1,10 @@
 package com.nhnacademy.message;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import com.nhnacademy.system.UndefinedJsonObject;
 
 public class JsonMessage extends Message {
     JSONObject jsonObject;
@@ -10,7 +14,20 @@ public class JsonMessage extends Message {
     }
 
     public JSONObject getJsonObject() {
-        return jsonObject;
+        return getDeepCopyJsonObject(jsonObject);
+    }
+
+    public static JSONObject getDeepCopyJsonObject(JSONObject jsonObject) {
+        JSONParser parser = new JSONParser();
+        JSONObject result = new JSONObject();
+        Object obj;
+        try {
+            obj = parser.parse(jsonObject.toString());
+            result = (JSONObject) obj;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public void setJsonObject(JSONObject jsonObject) {
@@ -18,13 +35,13 @@ public class JsonMessage extends Message {
     }
 
     public Object getPayload() {
-        if (jsonObject.get("payload") == null)
-            return "Undefined";
+        if (!jsonObject.containsKey("payload"))
+            return new UndefinedJsonObject<>();
         return jsonObject.get("payload");
     }
 
     public String getTopic() {
-        if (jsonObject.get("topic") == null)
+        if (!jsonObject.containsKey("topic"))
             return "Undefined";
         return jsonObject.get("topic").toString();
     }

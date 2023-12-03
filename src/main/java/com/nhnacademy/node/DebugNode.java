@@ -25,7 +25,6 @@ public class DebugNode extends OutputNode {
     private Boolean tostatus;
     private targetType type;
     private String[] complete;
-    private String fullComplete;
 
     public DebugNode(String id, int inCount, Boolean active, Boolean tosidebar, Boolean console, Boolean tostatus,
             targetType type,
@@ -37,7 +36,6 @@ public class DebugNode extends OutputNode {
         this.tostatus = tostatus;
         this.type = type;
         this.complete = parseComplete(complete);
-        fullComplete = complete;
     }
 
     public DebugNode(int inCount, Boolean active, Boolean tosidebar, Boolean console, Boolean tostatus, targetType type,
@@ -49,7 +47,6 @@ public class DebugNode extends OutputNode {
         this.tostatus = tostatus;
         this.type = type;
         this.complete = parseComplete(complete);
-        fullComplete = complete;
     }
 
     public Boolean getActive() {

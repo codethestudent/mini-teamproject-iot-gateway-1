@@ -5,6 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import org.json.simple.JSONObject;
 
 public class UndefinedJsonObject<V, K> extends JSONObject {
+    // 주어진 키의 마지막 키를 제외한 JSONObject를 반환
+    // 주어진 키가 없으면 UndefinedJsonObject를 반환
     public static JSONObject getDestJsonObject(Object jsonObject, String[] keys) {
         if (!(jsonObject instanceof JSONObject)) {
             try {
@@ -16,7 +18,8 @@ public class UndefinedJsonObject<V, K> extends JSONObject {
             }
         }
         JSONObject destJsonObject = (JSONObject) jsonObject;
-        for (String key : keys) {
+        for (int i = 0; i < keys.length; i++) {
+            String key = keys[i];
             if (!destJsonObject.containsKey(key)) {
                 try {
                     destJsonObject = UndefinedJsonObject.class.getConstructor().newInstance();
@@ -27,7 +30,7 @@ public class UndefinedJsonObject<V, K> extends JSONObject {
                     e.printStackTrace();
                 }
             }
-            if (key.equals(keys[keys.length - 1])) {
+            if (i == keys.length - 1) {
                 break;
             }
             if (!(destJsonObject.get(key) instanceof JSONObject)) {
@@ -52,7 +55,7 @@ public class UndefinedJsonObject<V, K> extends JSONObject {
 
     @Override
     public V get(Object key) {
-        return (V) "Undefined";
+        return (V) this;
     }
 
     @Override
@@ -63,6 +66,11 @@ public class UndefinedJsonObject<V, K> extends JSONObject {
         if (obj instanceof UndefinedJsonObject) {
             return true;
         }
+        return false;
+    }
+
+    @Override
+    public boolean containsKey(Object key) {
         return false;
     }
 }

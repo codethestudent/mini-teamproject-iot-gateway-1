@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "UndefinedJsonObject",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.system.UndefinedJsonObject",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
             "name": "SwitchNode",
             "request": "launch",
             "mainClass": "com.nhnacademy.node.SwitchNode",
