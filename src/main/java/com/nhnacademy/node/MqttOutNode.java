@@ -38,16 +38,18 @@ public class MqttOutNode extends OutputNode {
             Wire inputWire = getInputWire(i);
             if (inputWire == null)
                 continue;
-            Message message = inputWire.get();
-            if (!(message instanceof JsonMessage))
-                continue;
-            JsonMessage jsonMessage = (JsonMessage) message;
-            try {
-                broker.getClient().publish(topic,
-                        new MqttMessage(jsonMessage.getJsonObject().toJSONString().getBytes()));
-            } catch (MqttException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            while (inputWire.hasMessage()) {
+                Message message = inputWire.get();
+                if (!(message instanceof JsonMessage))
+                    continue;
+                JsonMessage jsonMessage = (JsonMessage) message;
+                try {
+                    broker.getClient().publish(topic,
+                            new MqttMessage(jsonMessage.getJsonObject().toJSONString().getBytes()));
+                } catch (MqttException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         }
     }
