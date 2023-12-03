@@ -25,6 +25,10 @@ public class MqttOutNode extends OutputNode {
     private MqttClient client;
     private String path = "src/main/resources/systemSetting.json";
 
+    public MqttOutNode(){
+        super(1);
+    }
+
     public MqttOutNode(String name, int count) {
         super(name, count);
 
