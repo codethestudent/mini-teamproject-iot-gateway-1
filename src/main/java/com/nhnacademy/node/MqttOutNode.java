@@ -1,75 +1,55 @@
 package com.nhnacademy.node;
 
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 
 import com.nhnacademy.message.JsonMessage;
 import com.nhnacademy.message.Message;
 import com.nhnacademy.wire.Wire;
-import org.json.simple.JSONObject;
 
 public class MqttOutNode extends OutputNode {
+    private Broker broker;
+    private String topic;
+    private int qos;
 
-    private String broker;
-    private MqttClient client;
-
-    public MqttOutNode(String name, int count, String broker) {
-        super(name, count);
+    public MqttOutNode(String id, int wireCount, Broker broker, String topic, int qos) {
+        super(id, wireCount);
         this.broker = broker;
+        this.topic = topic;
+        this.qos = qos;
+    }
+
+    public MqttOutNode(int wireCount, Broker broker, String topic, int qos) {
+        super(wireCount);
+        this.broker = broker;
+        this.topic = topic;
+        this.qos = qos;
     }
 
     @Override
     void preprocess() {
-        try {
-            client = new MqttClient(broker, MqttClient.generateClientId(), new MqttDefaultFilePersistence("./target/trash"));
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
+        // TODO Auto-generated method stub
+
     }
 
     @Override
     void process() {
-        sendToTelegraf();
-    }
-
-    public void sendToTelegraf() {
-        try {
-            MqttConnectOptions options = new MqttConnectOptions();
-            options.setAutomaticReconnect(true);
-            options.setCleanSession(true);
-            client.connect(options);
-
-            Wire inputWire = getInputWire(0);
-            if (inputWire != null) {
-                while (inputWire.hasMessage()) {
-                    Message message = inputWire.get();
-
-                    if (message instanceof JsonMessage) {
-                        JsonMessage jsonMessage = (JsonMessage) message;
-                        JSONObject messageJsonObject = jsonMessage.getJsonObject();
-
-                        client.publish(messageJsonObject.get("topic").toString(),
-                                new MqttMessage(messageJsonObject.get("payload").toString().getBytes()));
-                    }
-                }
-
+        for (int i = 0; i < getInputWireCount(); i++) {
+            Wire inputWire = getInputWire(i);
+            if (inputWire == null)
+                continue;
+            Message message = inputWire.get();
+            if (!(message instanceof JsonMessage))
+                continue;
+            JsonMessage jsonMessage = (JsonMessage) message;
+            try {
+                broker.getClient().publish(topic,
+                        new MqttMessage(jsonMessage.getJsonObject().toJSONString().getBytes()));
+            } catch (MqttException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
-
-            client.disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
-    @Override
-    void postprocess() {
-        try {
-            client.close();
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
-    }
 }
