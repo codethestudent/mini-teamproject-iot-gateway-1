@@ -6,6 +6,6 @@ public class Main {
     public static void main(String[] args) {
         // NodeRedSystem.getInstance().generateDefaultFlows("ems.nhnacademy.com",
         //         new String[] { "temperature", "humidity", "co2" });
-        NodeRedSystem.getInstance().load("flows.json");
+        NodeRedSystem.getInstance().load("src/main/resources/flows.json");
     }
 }
