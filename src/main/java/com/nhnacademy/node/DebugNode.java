@@ -92,7 +92,7 @@ public class DebugNode extends OutputNode {
                 while (wire.hasMessage()) {
                     Message message = wire.get();
                     if (!(message instanceof JsonMessage)) {
-                        throw new JSONMessageTypeException();
+                        continue;
                     }
                     JSONObject messagObject = ((JsonMessage) message).getJsonObject();
                     if (active) {

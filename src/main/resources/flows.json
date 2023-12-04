@@ -188,8 +188,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 190,
-        "y": 400,
+        "x": 150,
+        "y": 460,
         "wires": [
             [
                 "aaa36701814fcfb1"
@@ -265,12 +265,13 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 330,
-        "y": 400,
+        "x": 290,
+        "y": 460,
         "wires": [
             [
                 "cf98819de3cff2ac",
-                "b5293709b0ef1738"
+                "b5293709b0ef1738",
+                "9c48012edf01ccea"
             ]
         ]
     },
@@ -283,8 +284,8 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
         "x": 1340,
@@ -409,8 +410,8 @@
         "correl": "",
         "expiry": "",
         "broker": "ce93b66399f881a1",
-        "x": 1350,
-        "y": 400,
+        "x": 1550,
+        "y": 460,
         "wires": []
     },
     {
@@ -512,8 +513,8 @@
         "y": 460,
         "wires": [
             [
-                "d53e22de46b9ad2f",
-                "83dbb7b87aa06ca7"
+                "83dbb7b87aa06ca7",
+                "d53e22de46b9ad2f"
             ]
         ]
     },
@@ -522,7 +523,153 @@
         "type": "debug",
         "z": "6535aab52d360a5f",
         "name": "debug 9",
-        "active": true,
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1340,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "9c48012edf01ccea",
+        "type": "switch",
+        "z": "6535aab52d360a5f",
+        "name": "has co2",
+        "property": "payload.object",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "hask",
+                "v": "co2",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 500,
+        "y": 580,
+        "wires": [
+            [
+                "0556b9ff639c37b8"
+            ]
+        ]
+    },
+    {
+        "id": "0556b9ff639c37b8",
+        "type": "change",
+        "z": "6535aab52d360a5f",
+        "name": "insert co2",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.tempPayload.payload.co2",
+                "pt": "msg",
+                "to": "payload.object.co2",
+                "tot": "msg",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 680,
+        "y": 580,
+        "wires": [
+            [
+                "985f2cec539d1187"
+            ]
+        ]
+    },
+    {
+        "id": "985f2cec539d1187",
+        "type": "template",
+        "z": "6535aab52d360a5f",
+        "name": "",
+        "field": "payload.tempPayload.topic",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "data/s/{{payload.deviceInfo.tags.site}}/b/{{payload.deviceInfo.tenantName}}/p/{{payload.deviceInfo.tags.place}}/n/{{payload.deviceInfo.deviceName}}/e/co2",
+        "output": "str",
+        "x": 880,
+        "y": 580,
+        "wires": [
+            [
+                "a21506a60c69f2e9"
+            ]
+        ]
+    },
+    {
+        "id": "a21506a60c69f2e9",
+        "type": "change",
+        "z": "6535aab52d360a5f",
+        "name": "add topic",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "payload.tempPayload.topic",
+                "tot": "msg",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1020,
+        "y": 580,
+        "wires": [
+            [
+                "082da28d458a70be"
+            ]
+        ]
+    },
+    {
+        "id": "082da28d458a70be",
+        "type": "change",
+        "z": "6535aab52d360a5f",
+        "name": "set payload",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.tempPayload.payload",
+                "tot": "msg",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1170,
+        "y": 580,
+        "wires": [
+            [
+                "e67b00f432fb1767",
+                "d53e22de46b9ad2f"
+            ]
+        ]
+    },
+    {
+        "id": "e67b00f432fb1767",
+        "type": "debug",
+        "z": "6535aab52d360a5f",
+        "name": "debug 10",
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -531,7 +678,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1340,
-        "y": 460,
+        "y": 580,
         "wires": []
     },
     {

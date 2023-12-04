@@ -50,7 +50,7 @@ public class UndefinedJsonObject<V, K> extends JSONObject {
 
     @Override
     public String toString() {
-        return "Undefined";
+        return "undefined";
     }
 
     @Override

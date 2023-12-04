@@ -131,7 +131,7 @@ public class SwitchNode extends InputOutputNode {
                 while (wire.hasMessage()) {
                     Message message = wire.get();
                     if (!(message instanceof JsonMessage)) {
-                        throw new JSONMessageTypeException();
+                        continue;
                     }
                     JSONObject destJsonObject = UndefinedJsonObject
                             .getDestJsonObject(((JsonMessage) message).getJsonObject(), propertys);

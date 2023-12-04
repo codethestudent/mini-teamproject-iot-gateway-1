@@ -17,14 +17,14 @@ public abstract class Node {
         count++;
         id = String.format("%s-%02d", getClass().getSimpleName(), count);
         name = id;
-        log.trace("create node : {}", id);
+        log.trace("create " + getClass().getName() + " : {}", id);
     }
 
     Node(String id) {
         count++;
         this.id = id;
         name = id;
-        log.trace("create node : {}", id);
+        log.trace("create " + getClass().getName() + " : {}", id);
     }
 
     public String getId() {

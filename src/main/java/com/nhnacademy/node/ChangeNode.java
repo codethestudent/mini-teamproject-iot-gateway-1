@@ -168,7 +168,7 @@ public class ChangeNode extends InputOutputNode {
                 while (wire.hasMessage()) {
                     Message message = wire.get();
                     if (!(message instanceof JsonMessage)) {
-                        throw new JSONMessageTypeException();
+                        continue;
                     }
                     for (int j = 0; j < rules.size(); j++) {
                         JSONObject rule = (JSONObject) rules.get(j);
