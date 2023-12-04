@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
             "name": "NodeRedSystem",
             "request": "launch",
             "mainClass": "com.nhnacademy.system.NodeRedSystem",

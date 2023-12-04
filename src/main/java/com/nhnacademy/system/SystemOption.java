@@ -60,8 +60,10 @@ public class SystemOption {
             commandLine = parser.parse(options, this.args);
             if (args != null && commandLine.hasOption("c")) {
                 commandLineSetting(input);
+                NodeRedSystem.getInstance().load(commandLine.getOptionValue("c"));
             } else {
-                jsonFileSetting(input);
+                NodeRedSystem.getInstance().generateDefaultFlows("ems.nhnacademy.com", sensors);
+
             }
 
         } catch (ParseException e) {
