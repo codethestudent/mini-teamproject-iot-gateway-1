@@ -20,9 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 public class ChangeNode extends InputOutputNode {
     JSONArray rules;
 
-    public ChangeNode(String id,int outCount,  JSONArray rules)
+    public ChangeNode(String id, int outCount, JSONArray rules)
             throws RulesFormatViolationException {
-        super(id,outCount);
+        super(id, outCount);
         this.rules = rules;
         checkRules();
     }
@@ -104,10 +104,8 @@ public class ChangeNode extends InputOutputNode {
     }
 
     void output(Message message) {
-        for (int i = 0; i < getOutputWireCount(); i++) {
-            if (outputWires[0][i] != null) {
-                outputWires[0][i].put(message);
-            }
+        for (int i = 0; i < getOutputWireCount(0); i++) {
+            output(0, message);
         }
     }
 
@@ -120,9 +118,8 @@ public class ChangeNode extends InputOutputNode {
         }
         if (!property.contains(".")) {
             return new String[] { property };
-        } else {
-            return property.split("\\.");
         }
+        return property.split("\\.");
     }
 
     void checkJsonDestAvailable(JSONObject jsonObject, String[] keys) throws NonJSONObjectTypeException {
