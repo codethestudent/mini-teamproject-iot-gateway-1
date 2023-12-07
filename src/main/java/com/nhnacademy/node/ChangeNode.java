@@ -20,16 +20,16 @@ import lombok.extern.slf4j.Slf4j;
 public class ChangeNode extends InputOutputNode {
     JSONArray rules;
 
-    public ChangeNode(String id, int inCount, int outCount, int outWireCount, JSONArray rules)
+    public ChangeNode(String id,int outCount,  JSONArray rules)
             throws RulesFormatViolationException {
-        super(id, inCount, outCount, outWireCount);
+        super(id,outCount);
         this.rules = rules;
         checkRules();
     }
 
-    public ChangeNode(int inCount, int outCount, int outWireCount, JSONArray rules)
+    public ChangeNode(int outCount, JSONArray rules)
             throws RulesFormatViolationException {
-        super(inCount, outCount, outWireCount);
+        super(outCount);
         this.rules = rules;
         checkRules();
     }

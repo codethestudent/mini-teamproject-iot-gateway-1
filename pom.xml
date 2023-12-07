@@ -43,8 +43,15 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.4.13</version>
+      <version>1.4.14</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/ch.obermuhlner/java-scriptengine -->
+    <dependency>
+      <groupId>ch.obermuhlner</groupId>
+      <artifactId>java-scriptengine</artifactId>
+      <version>1.0.1</version>
+    </dependency>
+
 
     <!--command
     line-->

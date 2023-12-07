@@ -1,53 +1,41 @@
 package com.nhnacademy.node;
 
-import com.nhnacademy.exception.AlreadyExistsException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.nhnacademy.exception.InvalidArgumentException;
-import com.nhnacademy.exception.OutOfBoundsException;
 import com.nhnacademy.wire.Wire;
 
 public abstract class OutputNode extends ActiveNode {
-    Wire[] inputWires;
+    private List<Wire> inputPort;
 
-    public OutputNode(String id, int wireCount) {
+    protected OutputNode(String id) {
         super(id);
-        if (wireCount <= 0) {
-            throw new InvalidArgumentException();
-        }
-
-        inputWires = new Wire[wireCount];
+        inputPort = new ArrayList<>();
     }
 
-    public OutputNode(int wireCount) {
+    protected OutputNode() {
         super();
-        if (wireCount <= 0) {
+        inputPort = new ArrayList<>();
+    }
+
+    public void connectInputWire(Wire wire) {
+        if (wire == null) {
             throw new InvalidArgumentException();
         }
 
-        inputWires = new Wire[wireCount];
-    }
-
-    public void connectInputWire(int wireIndex, Wire wire) {
-        if (inputWires.length <= wireIndex) {
-            throw new OutOfBoundsException();
-        }
-
-        if (inputWires[wireIndex] != null) {
-            throw new AlreadyExistsException();
-        }
-
-        inputWires[wireIndex] = wire;
+        inputPort.add(wire);
     }
 
     public int getInputWireCount() {
-        return inputWires.length;
+        return inputPort.size();
     }
 
-    public Wire getInputWire(int wireIndex) {
-        if (wireIndex < 0 || inputWires.length <= wireIndex) {
-            throw new OutOfBoundsException();
+    public Wire getInputWire(int index) {
+        if (index < 0 || index >= getInputWireCount()) {
+            throw new InvalidArgumentException();
         }
 
-        return inputWires[wireIndex];
+        return inputPort.get(index);
     }
-
 }

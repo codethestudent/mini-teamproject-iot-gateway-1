@@ -1,5 +1,8 @@
 package com.nhnacademy.node;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.nhnacademy.exception.AlreadyExistsException;
 import com.nhnacademy.exception.InvalidArgumentException;
 import com.nhnacademy.exception.NotExistsException;
@@ -8,68 +11,80 @@ import com.nhnacademy.message.Message;
 import com.nhnacademy.wire.Wire;
 
 public abstract class InputNode extends ActiveNode {
-    Wire[][] outputWires;
+    List<Wire>[] outputPort;
 
-    public InputNode(String id, int outCount, int outWireCount) {
+    protected InputNode(String id, int outCount) {
         super(id);
 
-        if (outCount <= 0) {
-            throw new InvalidArgumentException();
+        if (outCount < 0) {
+            throw new OutOfBoundsException("outCount is out of bounds");
         }
 
-        outputWires = new Wire[outCount][outWireCount];
+        outputPort = new ArrayList[outCount];
+        for (int i = 0; i < outCount; i++) {
+            outputPort[i] = new ArrayList<>();
+        }
     }
 
-    public InputNode(int outCount, int outWireCount) {
+    protected InputNode(int outCount) {
         super();
 
-        if (outCount <= 0) {
-            throw new InvalidArgumentException();
+        if (outCount < 0) {
+            throw new OutOfBoundsException("outCount is out of bounds");
         }
 
-        outputWires = new Wire[outCount][outWireCount];
+        outputPort = new ArrayList[outCount];
+        for (int i = 0; i < outCount; i++) {
+            outputPort[i] = new ArrayList<>();
+        }
     }
 
-    public void connectOutputWire(int index, int outWireIndex, Wire wire) {
-        if (getOutputCount() <= index || index < 0 || getOutputWireCount() <= outWireIndex || outWireIndex < 0) {
-            throw new OutOfBoundsException();
-        }
-        if (outputWires[index][outWireIndex] != null) {
-            throw new AlreadyExistsException();
+    public void connectOutputWire(int index, Wire wire) {
+        if (index < 0 || index >= getOutputCount()) {
+            throw new OutOfBoundsException("index is out of bounds");
         }
 
-        outputWires[index][outWireIndex] = wire;
+        if (wire == null) {
+            throw new InvalidArgumentException("Wire is null");
+        }
+
+        if (outputPort[index].contains(wire)) {
+            throw new AlreadyExistsException("Wire is already connected");
+        }
+
+        outputPort[index].add(wire);
     }
 
-    public void disconnectOutputWire(int index, int outWireIndex) {
-        if (getOutputCount() <= index || index < 0 || getOutputWireCount() <= outWireIndex || outWireIndex < 0) {
-            throw new OutOfBoundsException();
+    public void disconnectOutputWire(int index, Wire wire) {
+        if (index < 0 || index >= getOutputCount()) {
+            throw new OutOfBoundsException("index is out of bounds");
         }
-        if (outputWires[index][outWireIndex] == null)
-            throw new NotExistsException();
 
-        outputWires[index][outWireIndex] = null;
+        if (wire == null) {
+            throw new InvalidArgumentException("Wire is null");
+        }
+
+        if (!outputPort[index].contains(wire)) {
+            throw new NotExistsException("Wire is not connected");
+        }
+
+        outputPort[index].remove(wire);
     }
 
     public int getOutputCount() {
-        return outputWires.length;
+        return outputPort.length;
     }
 
-    public int getOutputWireCount() {
-        if (outputWires.length == 0)
-            return 0;
-        return outputWires[0].length;
-    }
-
-    public Wire getoutputWire(int index, int outWireCount) {
-        if (index < 0 || outputWires.length <= index) {
-            throw new OutOfBoundsException();
+    public int getOutputWireCount(int index) {
+        if (index < 0 || index >= getOutputCount()) {
+            throw new OutOfBoundsException("index is out of bounds");
         }
-        return outputWires[index][outWireCount];
+
+        return outputPort[index].size();
     }
 
     void output(Message message, int index) {
-        for (Wire wire : outputWires[index]) {
+        for (Wire wire : outputPort[index]) {
             if (wire != null) {
                 wire.put(message);
             }

@@ -15,21 +15,21 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class DebugNode extends OutputNode {
-    public enum targetType {
-        msg, full
+    public enum TargetType {
+        MSG, FULL
     }
 
     private Boolean active;
     private Boolean tosidebar;
     private Boolean console;
     private Boolean tostatus;
-    private targetType type;
+    private TargetType type;
     private String[] complete;
 
-    public DebugNode(String id, int inCount, Boolean active, Boolean tosidebar, Boolean console, Boolean tostatus,
-            targetType type,
+    public DebugNode(String id, Boolean active, Boolean tosidebar, Boolean console, Boolean tostatus,
+            TargetType type,
             String complete) {
-        super(id, inCount);
+        super(id);
         this.active = active;
         this.tosidebar = tosidebar;
         this.console = console;
@@ -38,39 +38,15 @@ public class DebugNode extends OutputNode {
         this.complete = parseComplete(complete);
     }
 
-    public DebugNode(int inCount, Boolean active, Boolean tosidebar, Boolean console, Boolean tostatus, targetType type,
+    public DebugNode(Boolean active, Boolean tosidebar, Boolean console, Boolean tostatus, TargetType type,
             String complete) {
-        super(inCount);
+        super();
         this.active = active;
         this.tosidebar = tosidebar;
         this.console = console;
         this.tostatus = tostatus;
         this.type = type;
         this.complete = parseComplete(complete);
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public Boolean getTosidebar() {
-        return tosidebar;
-    }
-
-    public Boolean getConsole() {
-        return console;
-    }
-
-    public Boolean getTostatus() {
-        return tostatus;
-    }
-
-    public targetType getType() {
-        return type;
-    }
-
-    public String[] getComplete() {
-        return complete;
     }
 
     public String[] parseComplete(String complete) {
@@ -80,42 +56,40 @@ public class DebugNode extends OutputNode {
         if (!complete.contains(".")) {
             return new String[] { complete };
         }
-        String[] result = complete.split("\\.");
-        return result;
+        return complete.split("\\.");
+    }
+
+    void toSidebarMethod(JsonMessage jsonMessage, TargetType type, String[] complete) {
+        if (type == TargetType.MSG) {
+            JSONObject destJsonObject = JsonMessage.getDestJsonObject(jsonMessage.getJsonObject(), complete);
+            log.info(destJsonObject.get(complete[complete.length - 1]).toString());
+        } else if (type == TargetType.FULL) {
+            log.info(jsonMessage.getJsonObject().toString());
+        }
+
     }
 
     @Override
     void process() {
         for (int i = 0; i < getInputWireCount(); i++) {
             Wire wire = getInputWire(i);
-            if (wire != null) {
-                while (wire.hasMessage()) {
-                    Message message = wire.get();
-                    if (!(message instanceof JsonMessage)) {
-                        continue;
-                    }
-                    JSONObject messagObject = ((JsonMessage) message).getJsonObject();
-                    if (active) {
-                        if (tosidebar) {
-                            if (type == targetType.msg) {
-                                JSONObject destJsonObject = UndefinedJsonObject.getDestJsonObject(
-                                        messagObject, complete);
+            if (wire == null || !wire.hasMessage() || active.equals(false))
+                continue;
 
-                                log.info(destJsonObject.get(complete[complete.length - 1]).toString());
+            Message message = wire.get();
+            if (!(message instanceof JsonMessage))
+                throw new JSONMessageTypeException(getId() + " : Message is not JsonMessage");
 
-                            } else if (type == targetType.full) {
-                                log.info(messagObject.toString());
-                            }
-                        }
-                        if (tostatus) {
-
-                        }
-                        if (console) {
-
-                        }
-                    }
-                }
+            if (tosidebar.equals(true)) {
+                toSidebarMethod((JsonMessage) message, type, complete);
             }
+            if (tostatus.equals(true)) {
+                // 미구현
+            }
+            if (console.equals(true)) {
+                // 미구현
+            }
+
         }
     }
 }
