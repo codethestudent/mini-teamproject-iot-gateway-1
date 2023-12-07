@@ -1,51 +1,28 @@
 [
     {
-        "id": "8a409e6a83e6b662",
-        "type": "switch",
-        "z": "caed15d8ec31f744",
-        "name": "",
-        "property": "payload",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "hask",
-                "v": "",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "",
-                "vt": "str"
-            },
-            {
-                "t": "gte",
-                "v": "",
-                "vt": "str"
-            },
-            {
-                "t": "hask",
-                "v": "",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 4,
-        "x": 410,
-        "y": 480,
+        "id": "c956f0d458c0b340",
+        "type": "mqtt in",
+        "topic": "#",
+        "server": "tcp://ems.nhnacademy.com:1883",
         "wires": [
             [
-                "99bb40458dd9f926"
-            ],
-            [
-                "9082c5291fbeceac"
-            ],
-            [
-                "21ccf79ca2b58d94"
-            ],
-            [
-                "9184ed7a29ecbd6c"
+                "5ccd1d18d2c7c94d"
             ]
         ]
+    },
+    {
+        "id": "5ccd1d18d2c7c94d",
+        "type": "function",
+        "wires": [
+            [
+                "f7a40ab60424b975"
+            ]
+        ]
+    },
+    {
+        "id": "f7a40ab60424b975",
+        "type": "mqtt out",
+        "server": "tcp://localhost",
+        "wires": []
     }
 ]

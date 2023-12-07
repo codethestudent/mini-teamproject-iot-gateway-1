@@ -17,9 +17,11 @@ public class FunctionNode extends InputOutputNode {
     String[] sensors;
     List<String> sensorList;
     HashMap<String, String> value;
+    private JSONObject jsonObject;
 
-    public FunctionNode(int inCount, int outCount) {
+    public FunctionNode(int inCount, int outCount, JSONObject jsonObject) {
         super(inCount, outCount);
+        this.jsonObject = jsonObject;
     }
 
     @Override

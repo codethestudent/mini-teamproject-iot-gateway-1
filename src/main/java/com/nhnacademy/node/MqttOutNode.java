@@ -1,9 +1,5 @@
 package com.nhnacademy.node;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.ParseException;
-
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -12,54 +8,31 @@ import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 
 import com.nhnacademy.message.JsonMessage;
 import com.nhnacademy.message.Message;
-import com.nhnacademy.system.SystemOption;
 import com.nhnacademy.wire.Wire;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 @Slf4j
 public class MqttOutNode extends OutputNode {
-
     private String broker;
     private MqttClient client;
     private String path = "src/main/resources/systemSetting.json";
+    private JSONObject jsonObejct;
 
-    public MqttOutNode(){
-        super(1);
+    public MqttOutNode(int count, JSONObject jsonObject) {
+        super(count);
+        this.jsonObejct = jsonObject;
     }
 
-    public MqttOutNode(String name, int count) {
-        super(name, count);
-
-        // this.broker = broker;
-
-        try {
-            JSONParser jsonParser = new JSONParser();
-            JSONObject systemSettings;
-
-            systemSettings =
-                    (JSONObject) jsonParser.parse(new FileReader(path));
-
-
-            JSONObject outputSettings = (JSONObject) systemSettings.get("output");
-            if (outputSettings != null) {
-                Object serverValue = outputSettings.get("server");
-                if (serverValue != null) {
-                    this.broker = serverValue.toString();
-                }
-            }
-
-        } catch (IOException | org.json.simple.parser.ParseException e) {
-            e.printStackTrace();
-        }
-
+    public MqttOutNode(JSONObject jsonObject) {
+        this(1, jsonObject);
     }
 
     @Override
     void preprocess() {
         try {
-            client = new MqttClient(broker, MqttClient.generateClientId(),
+            log.trace(jsonObejct.get("server").toString());
+            client = new MqttClient(jsonObejct.get("server").toString(), MqttClient.generateClientId(),
                     new MqttDefaultFilePersistence("./target/trash"));
         } catch (MqttException e) {
             e.printStackTrace();

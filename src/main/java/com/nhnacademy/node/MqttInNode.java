@@ -17,17 +17,16 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MqttInNode extends InputNode {
-    private SystemOption sOptions;
     private IMqttClient client;
-    private String[] args;
+    private JSONObject jsonObject;
 
-    public MqttInNode(int count, String[] args) {
+    public MqttInNode(int count, JSONObject jsonObject) {
         super(count);
-        this.args = args;
+        this.jsonObject = jsonObject;
     }
 
-    public MqttInNode(String[] args) {
-        this(1, args);
+    public MqttInNode(JSONObject jsonObejct) {
+        this(1, jsonObejct);
     }
 
     @Override
@@ -35,9 +34,8 @@ public class MqttInNode extends InputNode {
         String publisherId;
         publisherId = UUID.randomUUID().toString();
 
-        sOptions = SystemOption.getSystemOption(args);
         try {
-            client = new MqttClient(sOptions.getInputServerUri(), publisherId,
+            client = new MqttClient(jsonObject.get("server").toString(), publisherId,
                     new MqttDefaultFilePersistence("./target/trash"));
 
         } catch (MqttException e) {
@@ -71,8 +69,9 @@ public class MqttInNode extends InputNode {
                 client.connect(options);
             }
 
-            String topicDirectory = (sOptions.getApplicationName() != null ? sOptions.getApplicationName()
-                    : "application");
+            String topicDirectory = "application";
+            // (sOptions.getApplicationName() != null ? sOptions.getApplicationName()
+            //         : "application");
 
             client.subscribe(topicDirectory + "/+/device/+/event/up/#", (topic, msg) -> {
                 try {

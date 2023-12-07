@@ -6,6 +6,23 @@
     "configurations": [
         {
             "type": "java",
+            "name": "SystemOptionsTest",
+            "request": "launch",
+            "mainClass": "SystemOptionsTest",
+            "projectName": "iot_gateway",
+            "args": [
+                "-c",
+                "--an",
+                "application",
+                "-s",
+                "temperature",
+                "humidity",
+                "co2",
+                "batteryLevel"
+            ]
+        },
+        {
+            "type": "java",
             "name": "FunctionNodeTest",
             "request": "launch",
             "mainClass": "FunctionNodeTest",
