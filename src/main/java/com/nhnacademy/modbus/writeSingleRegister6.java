@@ -1,4 +1,4 @@
-package com.nhnacademy.client;
+package com.nhnacademy.modbus;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
