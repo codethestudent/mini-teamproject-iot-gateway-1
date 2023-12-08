@@ -21,4 +21,8 @@ public class Flow {
     public JSONObject getFlowJsonObject() {
         return flowJsonObject;
     }
+
+    public void setFlowJsonObject(JSONObject flowJsonObject) {
+        this.flowJsonObject = flowJsonObject;
+    }
 }

@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "FunctionNode",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.node.FunctionNode",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
             "name": "test2",
             "request": "launch",
             "mainClass": "com.nhnacademy.node.test2",

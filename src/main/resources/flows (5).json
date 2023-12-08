@@ -1,0 +1,562 @@
+[
+    {
+        "id": "a0db3c850530b0a5",
+        "type": "tab",
+        "label": "플로우 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "0da11eff77dc7b22",
+        "type": "mqtt in",
+        "z": "a0db3c850530b0a5",
+        "name": "",
+        "topic": "application/#",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "f970aaee03f83071",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 220,
+        "wires": [
+            [
+                "95a5190a98798bba"
+            ]
+        ]
+    },
+    {
+        "id": "95a5190a98798bba",
+        "type": "switch",
+        "z": "a0db3c850530b0a5",
+        "name": "has tenantName",
+        "property": "payload.deviceInfo",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "hask",
+                "v": "tenantName",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 280,
+        "y": 220,
+        "wires": [
+            [
+                "09a073925d2ce207"
+            ]
+        ]
+    },
+    {
+        "id": "09a073925d2ce207",
+        "type": "switch",
+        "z": "a0db3c850530b0a5",
+        "name": "has deviceName",
+        "property": "payload.deviceInfo",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "hask",
+                "v": "deviceName",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 470,
+        "y": 220,
+        "wires": [
+            [
+                "de98d155475aed4e"
+            ]
+        ]
+    },
+    {
+        "id": "de98d155475aed4e",
+        "type": "switch",
+        "z": "a0db3c850530b0a5",
+        "name": "has devEui",
+        "property": "payload.deviceInfo",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "hask",
+                "v": "devEui",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 650,
+        "y": 220,
+        "wires": [
+            [
+                "7f721283898225b9"
+            ]
+        ]
+    },
+    {
+        "id": "058f6f6d32ecdfc0",
+        "type": "switch",
+        "z": "a0db3c850530b0a5",
+        "name": "has humdiity",
+        "property": "payload.object",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "hask",
+                "v": "humidity",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1030,
+        "y": 160,
+        "wires": [
+            [
+                "f11f1305fcc7ea75"
+            ]
+        ]
+    },
+    {
+        "id": "8edbe3c6c8d9888e",
+        "type": "switch",
+        "z": "a0db3c850530b0a5",
+        "name": "has co2",
+        "property": "payload.object",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "hask",
+                "v": "co2",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1020,
+        "y": 220,
+        "wires": [
+            [
+                "e930483106105116"
+            ]
+        ]
+    },
+    {
+        "id": "7265548d1750863f",
+        "type": "switch",
+        "z": "a0db3c850530b0a5",
+        "name": "has humidity",
+        "property": "payload.object",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "hask",
+                "v": "humidity",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1030,
+        "y": 280,
+        "wires": [
+            [
+                "84422f8376c36f21"
+            ]
+        ]
+    },
+    {
+        "id": "4a91765e77c7fd81",
+        "type": "file in",
+        "z": "a0db3c850530b0a5",
+        "name": "json",
+        "filename": "ramt.json",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 350,
+        "y": 620,
+        "wires": [
+            [
+                "2c0ad47bc6a259be",
+                "597980803de8c0b8"
+            ]
+        ]
+    },
+    {
+        "id": "4694ea747744f182",
+        "type": "inject",
+        "z": "a0db3c850530b0a5",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            },
+            {
+                "p": "tt",
+                "v": "23123",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 620,
+        "wires": [
+            [
+                "4a91765e77c7fd81"
+            ]
+        ]
+    },
+    {
+        "id": "2c0ad47bc6a259be",
+        "type": "json",
+        "z": "a0db3c850530b0a5",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 550,
+        "y": 620,
+        "wires": [
+            [
+                "bd6822a746894f5d",
+                "05f07dab60e69133"
+            ]
+        ]
+    },
+    {
+        "id": "bd6822a746894f5d",
+        "type": "change",
+        "z": "a0db3c850530b0a5",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "ramt",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 730,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ce8cddd1b22f806e",
+        "type": "inject",
+        "z": "a0db3c850530b0a5",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "ramt",
+        "payloadType": "flow",
+        "x": 340,
+        "y": 540,
+        "wires": [
+            [
+                "a4ca052789b664a3"
+            ]
+        ]
+    },
+    {
+        "id": "a4ca052789b664a3",
+        "type": "debug",
+        "z": "a0db3c850530b0a5",
+        "name": "debug 22",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "05f07dab60e69133",
+        "type": "debug",
+        "z": "a0db3c850530b0a5",
+        "name": "debug 24",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "7f721283898225b9",
+        "type": "function",
+        "z": "a0db3c850530b0a5",
+        "name": "3 Class value",
+        "func": "msg.payload.tempPayload = {}\nmsg.payload.tempPayload.adress = flow.get(\"ramt\")[\"NHN Academy 경남\"] + flow.get(\"ramt\")[\"강의실A(AM107-067999)\"] + flow.get(\"ramt\")[\"24e124128c067999\"]\nreturn msg",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 220,
+        "wires": [
+            [
+                "058f6f6d32ecdfc0",
+                "8edbe3c6c8d9888e",
+                "7265548d1750863f"
+            ]
+        ]
+    },
+    {
+        "id": "5f1f06937a88b466",
+        "type": "debug",
+        "z": "a0db3c850530b0a5",
+        "name": "debug 26",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1360,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "f11f1305fcc7ea75",
+        "type": "function",
+        "z": "a0db3c850530b0a5",
+        "name": "temp pay",
+        "func": "msg.payload.tempPayload.quantity = msg.payload.object.temperature\nmsg.payload.tempPayload.adress = msg.payload.tempPayload.adress + flow.get(\"ramt\")[\"temperature\"]\nmsg.payload = msg.payload.tempPayload\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1180,
+        "y": 160,
+        "wires": [
+            [
+                "5f1f06937a88b466"
+            ]
+        ]
+    },
+    {
+        "id": "2d42ada2d2dd757d",
+        "type": "modbus-write",
+        "z": "a0db3c850530b0a5",
+        "name": "",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "unitid": "",
+        "dataType": "",
+        "adr": "",
+        "quantity": "",
+        "server": "712b1ec17ac9a301",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 1380,
+        "y": 120,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "e930483106105116",
+        "type": "function",
+        "z": "a0db3c850530b0a5",
+        "name": "co2 pay",
+        "func": "msg.payload.tempPayload.quantity = msg.payload.object.temperature\nmsg.payload.tempPayload.adress = msg.payload.tempPayload.adress + flow.get(\"ramt\")[\"co2\"]\nmsg.payload = msg.payload.tempPayload\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1179.199951171875,
+        "y": 218.1999969482422,
+        "wires": [
+            [
+                "5f1f06937a88b466"
+            ]
+        ]
+    },
+    {
+        "id": "84422f8376c36f21",
+        "type": "function",
+        "z": "a0db3c850530b0a5",
+        "name": "humi pay",
+        "func": "msg.payload.tempPayload.quantity = msg.payload.object.temperature\nmsg.payload.tempPayload.adress = msg.payload.tempPayload.adress + flow.get(\"ramt\")[\"humidity\"]\nmsg.payload = msg.payload.tempPayload\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1180,
+        "y": 280,
+        "wires": [
+            [
+                "5f1f06937a88b466"
+            ]
+        ]
+    },
+    {
+        "id": "cff0943813242e7e",
+        "type": "modbus-flex-write",
+        "z": "a0db3c850530b0a5",
+        "name": "",
+        "showStatusActivities": false,
+        "showErrors": false,
+        "showWarnings": true,
+        "server": "712b1ec17ac9a301",
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": false,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 1390,
+        "y": 160,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "597980803de8c0b8",
+        "type": "debug",
+        "z": "a0db3c850530b0a5",
+        "name": "debug 27",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 480,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "f970aaee03f83071",
+        "type": "mqtt-broker",
+        "name": "NHN Academy EMS",
+        "broker": "ems.nhnacademy.com",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "712b1ec17ac9a301",
+        "type": "modbus-client",
+        "name": "",
+        "clienttype": "tcp",
+        "bufferCommands": true,
+        "stateLogEnabled": false,
+        "queueLogEnabled": false,
+        "failureLogEnabled": true,
+        "tcpHost": "172.18.0.1",
+        "tcpPort": "10502",
+        "tcpType": "DEFAULT",
+        "serialPort": "/dev/ttyUSB",
+        "serialType": "RTU-BUFFERD",
+        "serialBaudrate": "9600",
+        "serialDatabits": "8",
+        "serialStopbits": "1",
+        "serialParity": "none",
+        "serialConnectionDelay": "100",
+        "serialAsciiResponseStartDelimiter": "0x3A",
+        "unit_id": "1",
+        "commandDelay": "1",
+        "clientTimeout": "1000",
+        "reconnectOnTimeout": true,
+        "reconnectTimeout": "10",
+        "parallelUnitIdsAllowed": true,
+        "showWarnings": true,
+        "showLogs": true
+    }
+]
