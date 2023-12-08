@@ -1,14 +1,10 @@
 package com.nhnacademy.node;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.json.simple.JSONObject;
 
 import com.nhnacademy.exception.JSONMessageTypeException;
 import com.nhnacademy.message.JsonMessage;
 import com.nhnacademy.message.Message;
-import com.nhnacademy.system.UndefinedJsonObject;
 import com.nhnacademy.wire.Wire;
 
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +31,7 @@ public class DebugNode extends OutputNode {
         this.console = console;
         this.tostatus = tostatus;
         this.type = type;
-        this.complete = parseComplete(complete);
+        this.complete = JsonMessage.splitKeys(complete);
     }
 
     public DebugNode(Boolean active, Boolean tosidebar, Boolean console, Boolean tostatus, TargetType type,
@@ -46,28 +42,19 @@ public class DebugNode extends OutputNode {
         this.console = console;
         this.tostatus = tostatus;
         this.type = type;
-        this.complete = parseComplete(complete);
+        this.complete = JsonMessage.splitKeys(complete);
     }
 
-    public String[] parseComplete(String complete) {
-        if (complete == null) {
-            return new String[] { "payload" };
-        }
-        if (!complete.contains(".")) {
-            return new String[] { complete };
-        }
-        return complete.split("\\.");
-    }
-
-    void toSidebarMethod(JsonMessage jsonMessage, TargetType type, String[] complete) {
-        if (type == TargetType.MSG) {
-            JSONObject destJsonObject = JsonMessage.getDestJsonObject(jsonMessage.getJsonObject(), complete);
-            log.info(destJsonObject.get(complete[complete.length - 1]).toString());
-        } else if (type == TargetType.FULL) {
-            log.info(jsonMessage.getJsonObject().toString());
-        }
-
-    }
+    // 참고용
+    // public String[] parseComplete(String complete) {
+    // if (complete == null) {
+    // return new String[] { "payload" };
+    // }
+    // if (!complete.contains(".")) {
+    // return new String[] { complete };
+    // }
+    // return complete.split("\\.");
+    // }
 
     @Override
     void process() {
@@ -79,9 +66,13 @@ public class DebugNode extends OutputNode {
             Message message = wire.get();
             if (!(message instanceof JsonMessage))
                 throw new JSONMessageTypeException(getId() + " : Message is not JsonMessage");
-
+            JSONObject messagJsonObject = ((JsonMessage) message).getJsonObject();
             if (tosidebar.equals(true)) {
-                toSidebarMethod((JsonMessage) message, type, complete);
+                if (type == TargetType.MSG) {
+                    log.info(messagJsonObject.get(complete[complete.length - 1]).toString());
+                } else if (type == TargetType.FULL) {
+                    log.info(messagJsonObject.toString());
+                }
             }
             if (tostatus.equals(true)) {
                 // 미구현

@@ -109,6 +109,14 @@ public abstract class InputOutputNode extends ActiveNode {
         return inputPort.size();
     }
 
+    public Wire getInputWire(int index) {
+        if (index < 0 || index >= getInputWireCount()) {
+            throw new OutOfBoundsException("index is out of bounds");
+        }
+
+        return inputPort.get(index);
+    }
+
     void output(int index, Message message) {
         for (Wire wire : outputPort[index]) {
             if (wire != null) {
