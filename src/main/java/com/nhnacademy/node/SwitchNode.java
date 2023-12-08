@@ -1,54 +1,51 @@
 package com.nhnacademy.node;
 
-import java.util.ArrayList;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.nhnacademy.exception.JSONMessageTypeException;
 import com.nhnacademy.exception.PropertyEmptyException;
 import com.nhnacademy.exception.RulesFormatViolationException;
 import com.nhnacademy.message.JsonMessage;
 import com.nhnacademy.message.Message;
-import com.nhnacademy.system.UndefinedJsonObject;
+import com.nhnacademy.system.NodeRedSystem;
 import com.nhnacademy.wire.Wire;
 
 public class SwitchNode extends InputOutputNode {
-    public enum propertyType {
-        msg
+    public enum PropertyType {
+        MSG, FLOW, GLOBAL
     }
 
     private String property;
-    private String[] propertys;
-    private propertyType type;
+    private String[] keys;
+    private PropertyType propertyType;
     private JSONArray rules;
     private Boolean checkall;
-    // private int outputs;
+    private String flowId;
 
-    public SwitchNode(String id, int inWireCount, int outCount, int outWireCount, String property, propertyType type,
-            JSONArray rules, Boolean checkall)
+    public SwitchNode(String id, int outCount, String property, PropertyType type,
+            JSONArray rules, Boolean checkall, String flowId)
             throws RulesFormatViolationException, PropertyEmptyException {
-        super(id, inWireCount, outCount, outWireCount);
+        super(id, outCount);
         this.property = property;
-        this.type = type;
+        this.propertyType = type;
         this.rules = rules;
         this.checkall = checkall;
-        // this.outputs = outpus;
+        this.flowId = flowId;
         checkRules();
-        propertys = splitProperts(property);
+        keys = JsonMessage.splitKeys(property);
     }
 
-    public SwitchNode(int inWireCount, int outCount, int outWireCount, String property, propertyType type,
-            JSONArray rules, Boolean checkall)
+    public SwitchNode(int outCount, String property, PropertyType type,
+            JSONArray rules, Boolean checkall, String flowId)
             throws RulesFormatViolationException, PropertyEmptyException {
-        super(inWireCount, outCount, outWireCount);
+        super(outCount);
         this.property = property;
-        this.type = type;
+        this.propertyType = type;
         this.rules = rules;
         this.checkall = checkall;
-        // this.outputs = outpus;
+        this.flowId = flowId;
         checkRules();
-        propertys = splitProperts(property);
+        keys = JsonMessage.splitKeys(property);
     }
 
     void checkRules() throws RulesFormatViolationException {
@@ -89,93 +86,69 @@ public class SwitchNode extends InputOutputNode {
         }
     }
 
-    String[] splitProperts(String property) {
-        if (this.property == null) {
-            throw new PropertyEmptyException();
-        }
-        if (this.property.equals("")) {
-            throw new PropertyEmptyException();
-        }
-        if (!this.property.contains(".")) {
-            return new String[] { this.property };
-        } else {
-            return this.property.split("\\.");
-        }
-    }
-
-    public String getProperty() {
-        return property;
-    }
-
-    public propertyType getType() {
-        return type;
-    }
-
-    public JSONArray getRules() {
-        return rules;
-    }
-
-    public Boolean getCheckall() {
-        return checkall;
-    }
-
-    // public int getOutputs() {
-    //     return outputs;
-    // }
-
     @Override
     void process() {
         for (int i = 0; i < getInputWireCount(); i++) {
             Wire wire = getInputWire(i);
-            if (wire != null) {
-                while (wire.hasMessage()) {
-                    Message message = wire.get();
-                    if (!(message instanceof JsonMessage)) {
-                        continue;
-                    }
-                    JSONObject destJsonObject = UndefinedJsonObject
-                            .getDestJsonObject(((JsonMessage) message).getJsonObject(), propertys);
-                    for (int j = 0; j < rules.size(); j++) {
-                        JSONObject rule = (JSONObject) rules.get(j);
-                        if (rule.get("t").equals("eq")) {
-                            if (rule.get("vt").equals("str")) {
-                                if (destJsonObject.get(propertys[propertys.length - 1]).equals(rule.get("v"))) {
-                                    output(j, message);
-                                }
-                            } else if (rule.get("vt").equals("msg")) {
-                                String[] v = splitProperts(rule.get("v").toString());
-                                JSONObject messageDestJsonObject = UndefinedJsonObject
-                                        .getDestJsonObject(((JsonMessage) message).getJsonObject(), v);
-                                if (destJsonObject.get(propertys[propertys.length - 1])
-                                        .equals(messageDestJsonObject.get(v[v.length - 1]))) {
-                                    output(j, message);
-                                }
-                            }
-                        } else if (rule.get("t").equals("cont")) {
-                            //미구현
-                        } else if (rule.get("t").equals("hask")) {
-                            if (rule.get("vt").equals("str")) {
-                                if (((JSONObject) destJsonObject.get(propertys[propertys.length - 1]))
-                                        .containsKey(rule.get("v"))) {
-                                    output(j, message);
-                                } else if (rule.get("vt").equals("msg")) {
-                                    // String[] v = splitProperts(rule.get("v").toString());
-                                    // JSONObject messageDestJsonObject = UndefinedJsonObject
-                                    // .getDestJsonObject(((JsonMessage) message).getJsonObject(), v);
-                                    // if (messageDestJsonObject instanceof UndefinedJsonObject) {
-                                    // continue;
-                                    // }
-                                    // if (destJsonObject
-                                    // .containsKey(messageDestJsonObject.get(v[v.length - 1].toString()))) {
-                                    // output(j, message);
-                                    // }
-                                }
-                            }
+            if (wire == null || !wire.hasMessage())
+                continue;
+            Message message = wire.get();
+            if (!(message instanceof JsonMessage)) {
+                continue;
+            }
+            JSONObject messagJsonObject = ((JsonMessage) message).getJsonObject();
+            JSONObject destJsonObject = null;
+
+            if (propertyType.equals(PropertyType.MSG)) {
+                destJsonObject = JsonMessage.getDestJsonObject(messagJsonObject, keys);
+            } else if (propertyType.equals(PropertyType.FLOW)) {
+                destJsonObject = NodeRedSystem.getInstance().getFlow(flowId).getFlowJsonObject();
+            } else if (propertyType.equals(PropertyType.GLOBAL)) {
+                // 미구현
+            }
+
+            for (int j = 0; j < rules.size(); j++) {
+                JSONObject rule = (JSONObject) rules.get(j);
+                if (rule.get("t").equals("eq")) {
+                    if (rule.get("vt").equals("str")) {
+                        if (destJsonObject.get(keys[keys.length - 1]).equals(rule.get("v"))) {
+                            output(j, message);
+                        }
+                    } else if (rule.get("vt").equals("msg")) {
+                        String[] vkeys = JsonMessage.splitKeys(rule.get("v").toString());
+                        JSONObject vDestObject = JsonMessage.getDestJsonObject(messagJsonObject, vkeys);
+                        if (destJsonObject.get(keys[keys.length - 1])
+                                .equals(vDestObject.get(vkeys[vkeys.length - 1]))) {
+                            output(j, message);
+                        }
+                    } else if (rule.get("vt").equals("flow")) {
+                        // 미구현
+                    } else if (rule.get("vt").equals("global")) {
+                        // 미구현
+                    } // ...
+                } else if (rule.get("t").equals("cont")) {
+                    // 미구현
+                } else if (rule.get("t").equals("hask")) {
+                    if (rule.get("vt").equals("str")) {
+                        if (((JSONObject) destJsonObject.get(keys[keys.length - 1]))
+                                .containsKey(rule.get("v"))) {
+                            output(j, message);
+                        } else if (rule.get("vt").equals("MSG")) {
+                            // String[] v = splitProperts(rule.get("v").toString());
+                            // JSONObject messageDestJsonObject = UndefinedJsonObject
+                            // .getDestJsonObject(((JsonMessage) message).getJsonObject(), v);
+                            // if (messageDestJsonObject instanceof UndefinedJsonObject) {
+                            // continue;
+                            // }
+                            // if (destJsonObject
+                            // .containsKey(messageDestJsonObject.get(v[v.length - 1].toString()))) {
+                            // output(j, message);
+                            // }
                         }
                     }
-
                 }
             }
+
         }
     }
 }

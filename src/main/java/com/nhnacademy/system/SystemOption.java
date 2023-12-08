@@ -62,7 +62,7 @@ public class SystemOption {
                 commandLineSetting(input);
                 NodeRedSystem.getInstance().load(commandLine.getOptionValue("c"));
             } else {
-                NodeRedSystem.getInstance().generateDefaultFlows("ems.nhnacademy.com", sensors);
+                // NodeRedSystem.getInstance().generateDefaultFlows("ems.nhnacademy.com", sensors);
 
             }
 

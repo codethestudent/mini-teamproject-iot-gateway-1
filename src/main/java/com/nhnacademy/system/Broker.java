@@ -1,4 +1,4 @@
-package com.nhnacademy.node;
+package com.nhnacademy.system;
 
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;

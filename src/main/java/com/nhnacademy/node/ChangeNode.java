@@ -3,11 +3,12 @@ package com.nhnacademy.node;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.nhnacademy.exception.NonJSONObjectTypeException;
 import com.nhnacademy.exception.PropertyEmptyException;
 import com.nhnacademy.exception.RulesFormatViolationException;
 import com.nhnacademy.message.JsonMessage;
 import com.nhnacademy.message.Message;
-import com.nhnacademy.system.UndefinedJsonObject;
+import com.nhnacademy.system.NodeRedSystem;
 import com.nhnacademy.wire.Wire;
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,18 +16,21 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ChangeNode extends InputOutputNode {
     JSONArray rules;
+    String flowId;
 
-    public ChangeNode(String id, int outCount, JSONArray rules)
+    public ChangeNode(String id, int outCount, JSONArray rules, String z)
             throws RulesFormatViolationException {
         super(id, outCount);
         this.rules = rules;
+        this.flowId = z;
         checkRules();
     }
 
-    public ChangeNode(int outCount, JSONArray rules)
+    public ChangeNode(int outCount, JSONArray rules, String z)
             throws RulesFormatViolationException {
         super(outCount);
         this.rules = rules;
+        this.flowId = z;
         checkRules();
     }
 
@@ -95,11 +99,6 @@ public class ChangeNode extends InputOutputNode {
         }
     }
 
-    @Override
-    public void output(int index, Message message) {
-        output(message);
-    }
-
     void output(Message message) {
         for (int i = 0; i < getOutputWireCount(0); i++) {
             output(0, message);
@@ -120,52 +119,53 @@ public class ChangeNode extends InputOutputNode {
             for (int j = 0; j < rules.size(); j++) {
                 JSONObject rule = (JSONObject) rules.get(j);
                 String[] keys = JsonMessage.splitKeys((String) rule.get("p"));
+                JSONObject destJsonObject = null;
+                if (rule.get("pt").equals("msg")) {
+                    destJsonObject = JsonMessage
+                            .getDestWithCheckAndMakeJsonObject(messagJsonObject, keys);
+                } else if (rule.get("pt").equals("flow")) {
+                    destJsonObject = NodeRedSystem.getInstance().getFlow(flowId)
+                            .getFlowJsonObject();
+                } else if (rule.get("pt").equals("global")) {
+                    // 미구현
+                }
                 try {
                     if (rule.get("t").equals("set")) {
-                        if (rule.get("pt").equals("msg")) {
-                            if (rule.get("tot").equals("str")) {
-                                // 미구현
-                            } else if (rule.get("tot").equals("msg")) {
-                                String[] toKeys = JsonMessage.splitKeys((String) rule.get("to"));
-                                JSONObject toJsonObject = JsonMessage
-                                        .getDestJsonObject(messagJsonObject, toKeys);
-                                if (rule.get("dc").equals(true)) {
-                                    if (toJsonObject.containsKey(toKeys[toKeys.length - 1])) {
-                                        JSONObject destJsonObject = JsonMessage
-                                                .getDestWithCheckAndMakeJsonObject(messagJsonObject, keys);
-                                        // deep copy의 경우 JSONObject의 경우에만 적용해야해서 toJsonObject가 JSONObject인 경우와 아닌 경우를
-                                        // 나누어서 처리
-                                        if (toJsonObject.get(
-                                                toKeys[toKeys.length - 1]) instanceof JSONObject) {
-                                            destJsonObject.put(keys[keys.length - 1],
-                                                    JsonMessage.getDeepCopyJsonObject((JSONObject) toJsonObject
-                                                            .get(toKeys[toKeys.length - 1])));
-                                        } else {
-                                            destJsonObject.put(keys[keys.length - 1],
-                                                    toJsonObject.get(toKeys[toKeys.length - 1]));
-                                        }
+                        if (rule.get("tot").equals("str")) {
+                            // 미구현
+                        } else if (rule.get("tot").equals("msg")) {
+                            String[] toKeys = JsonMessage.splitKeys((String) rule.get("to"));
+                            JSONObject toJsonObject = JsonMessage
+                                    .getDestJsonObject(messagJsonObject, toKeys);
+                            if (rule.get("dc").equals(true)) {
+                                if (toJsonObject.containsKey(toKeys[toKeys.length - 1])) {
+
+                                    // deep copy의 경우 JSONObject의 경우에만 적용해야해서 toJsonObject가 JSONObject인 경우와 아닌 경우를
+                                    // 나누어서 처리
+                                    if (toJsonObject.get(
+                                            toKeys[toKeys.length - 1]) instanceof JSONObject) {
+                                        destJsonObject.put(keys[keys.length - 1],
+                                                JsonMessage.getDeepCopyJsonObject((JSONObject) toJsonObject
+                                                        .get(toKeys[toKeys.length - 1])));
+                                    } else {
+                                        destJsonObject.put(keys[keys.length - 1],
+                                                toJsonObject.get(toKeys[toKeys.length - 1]));
                                     }
-                                } else if (rule.get("dc").equals(false)) {
-                                    // 미구현
                                 }
-                            } else if (rule.get("tot").equals("date")) {
-                                JSONObject destJsonObject = JsonMessage.getDestWithMakeRootJsonObject(messagJsonObject,
-                                        keys);
-                                destJsonObject.put(keys[keys.length - 1], System.currentTimeMillis());
-                            } else if (rule.get("tot").equals("num")) {
+                            } else if (rule.get("dc").equals(false)) {
                                 // 미구현
-                            } else if (rule.get("tot").equals("bool")) {
-                                // 미구현
-                            } else if (rule.get("tot").equals("flow")) {
-                                // 미구현
-                            } else if (rule.get("tot").equals("global")) {
-                                // 미구현
-                            } // ...
-                        } else if (rule.get("pt").equals("flow")) {
+                            }
+                        } else if (rule.get("tot").equals("date")) {
+                            destJsonObject.put(keys[keys.length - 1], System.currentTimeMillis());
+                        } else if (rule.get("tot").equals("num")) {
                             // 미구현
-                        } else if (rule.get("pt").equals("global")) {
+                        } else if (rule.get("tot").equals("bool")) {
                             // 미구현
-                        }
+                        } else if (rule.get("tot").equals("flow")) {
+                            // 미구현
+                        } else if (rule.get("tot").equals("global")) {
+                            // 미구현
+                        } // ...
 
                     } else if (rule.get("t").equals("change")) {
                         // 미구현

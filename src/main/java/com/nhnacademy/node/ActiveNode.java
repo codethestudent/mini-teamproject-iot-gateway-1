@@ -1,9 +1,12 @@
 package com.nhnacademy.node;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * ActiveNode는 스레드로 구현 됨 노드와 스레드를 구현(Extends, Implements)
  * constructor 는 스레드 생성, 이름 지정.
  */
+@Slf4j
 public abstract class ActiveNode extends Node implements Runnable {
     Thread thread;
     boolean running;
@@ -73,6 +76,7 @@ public abstract class ActiveNode extends Node implements Runnable {
                     process();
                     Thread.sleep(interval - elapsedTime);
                 } catch (InterruptedException e) {
+                    log.info(getId() + " : Interrupted\n" + e.getMessage());
                     Thread.currentThread().interrupt();
                 }
             }

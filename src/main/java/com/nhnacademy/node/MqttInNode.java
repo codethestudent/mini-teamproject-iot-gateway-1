@@ -1,13 +1,13 @@
 package com.nhnacademy.node;
 
 import java.net.UnknownHostException;
-import java.util.HashMap;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import com.nhnacademy.message.JsonMessage;
 import com.nhnacademy.message.Message;
+import com.nhnacademy.system.Broker;
 import com.nhnacademy.wire.Wire;
 
 import lombok.extern.slf4j.Slf4j;
@@ -36,31 +36,12 @@ public class MqttInNode extends InputNode {
         this.broker = broker;
     }
 
-    @Override
-    public void connectOutputWire(int index, Wire wire) {
-        connectOutputWire(0, wire);
-    }
-
     public void connectOutputWire(Wire wire) {
         connectOutputWire(0, wire);
     }
 
-    public void disconnectOutputWire(Wire wire) {
-        super.disconnectOutputWire(0, wire);
-    }
-
-    @Override
-    public void disconnectOutputWire(int index, Wire wire) {
-        throw new UnsupportedOperationException();
-    }
-
     void output(Message message) {
         super.output(message, 0);
-    }
-
-    @Override
-    void output(Message message, int index) {
-        throw new UnsupportedOperationException();
     }
 
     @Override

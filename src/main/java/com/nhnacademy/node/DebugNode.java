@@ -20,7 +20,7 @@ public class DebugNode extends OutputNode {
     private Boolean console;
     private Boolean tostatus;
     private TargetType type;
-    private String[] complete;
+    private String[] keys;
 
     public DebugNode(String id, Boolean active, Boolean tosidebar, Boolean console, Boolean tostatus,
             TargetType type,
@@ -31,7 +31,7 @@ public class DebugNode extends OutputNode {
         this.console = console;
         this.tostatus = tostatus;
         this.type = type;
-        this.complete = JsonMessage.splitKeys(complete);
+        this.keys = JsonMessage.splitKeys(complete);
     }
 
     public DebugNode(Boolean active, Boolean tosidebar, Boolean console, Boolean tostatus, TargetType type,
@@ -42,18 +42,18 @@ public class DebugNode extends OutputNode {
         this.console = console;
         this.tostatus = tostatus;
         this.type = type;
-        this.complete = JsonMessage.splitKeys(complete);
+        this.keys = JsonMessage.splitKeys(complete);
     }
 
     // 참고용
-    // public String[] parseComplete(String complete) {
-    // if (complete == null) {
+    // public String[] parseComplete(String keys) {
+    // if (keys == null) {
     // return new String[] { "payload" };
     // }
-    // if (!complete.contains(".")) {
-    // return new String[] { complete };
+    // if (!keys.contains(".")) {
+    // return new String[] { keys };
     // }
-    // return complete.split("\\.");
+    // return keys.split("\\.");
     // }
 
     @Override
@@ -69,7 +69,8 @@ public class DebugNode extends OutputNode {
             JSONObject messagJsonObject = ((JsonMessage) message).getJsonObject();
             if (tosidebar.equals(true)) {
                 if (type == TargetType.MSG) {
-                    log.info(messagJsonObject.get(complete[complete.length - 1]).toString());
+                    JSONObject destJsonObject = JsonMessage.getDestJsonObject(messagJsonObject, keys);
+                    log.info(destJsonObject.get(keys[keys.length - 1]).toString());
                 } else if (type == TargetType.FULL) {
                     log.info(messagJsonObject.toString());
                 }
