@@ -45,6 +45,17 @@ public class DebugNode extends OutputNode {
         this.keys = JsonMessage.splitKeys(complete);
     }
 
+    public DebugNode generate(JSONObject jsonObject) {
+        String id = (String) jsonObject.get("id");
+        Boolean active = (Boolean) jsonObject.get("active");
+        Boolean tosidebar = (Boolean) jsonObject.get("tosidebar");
+        Boolean console = (Boolean) jsonObject.get("console");
+        Boolean tostatus = (Boolean) jsonObject.get("tostatus");
+        TargetType type = TargetType.valueOf((String) jsonObject.get("type"));
+        String complete = (String) jsonObject.get("complete");
+        return new DebugNode(id, active, tosidebar, console, tostatus, type, complete);
+    }
+
     // 참고용
     // public String[] parseComplete(String keys) {
     // if (keys == null) {

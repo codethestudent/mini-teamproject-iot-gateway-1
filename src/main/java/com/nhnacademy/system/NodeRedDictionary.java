@@ -22,9 +22,19 @@ public class NodeRedDictionary {
         dictionary.put("msg", "MSG");
         dictionary.put("full", "FULL");
         dictionary.put("flow", "FLOW");
+        dictionary.put("global", "GLOBAL");
+        dictionary.put("switch", "SwitchNode");
+        dictionary.put("debug", "DebugNode");
+        dictionary.put("function", "FunctionNode");
     }
 
-    public String getDictionary(String key) {
+    public String getDictionary(String key) throws NullPointerException {
+        if (key == null) {
+            throw new NullPointerException("키값이 null입니다.");
+        }
+        if (!dictionary.containsKey(key)) {
+            throw new NullPointerException("NodeRedDictionary에 없는 키값입니다.");
+        }
         return dictionary.get(key);
     }
 }
