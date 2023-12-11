@@ -11,18 +11,14 @@ import com.nhnacademy.system.NodeRedSystem;
 import com.nhnacademy.wire.Wire;
 
 public class SwitchNode extends InputOutputNode {
-    public enum PropertyType {
-        MSG, FLOW, GLOBAL
-    }
-
     private String property;
     private String[] keys;
-    private PropertyType propertyType;
+    private String propertyType;
     private JSONArray rules;
     private Boolean checkall;
     private String flowId;
 
-    public SwitchNode(String id, int outCount, String property, PropertyType type,
+    public SwitchNode(String id, int outCount, String property, String type,
             JSONArray rules, Boolean checkall, String flowId)
             throws RulesFormatViolationException, PropertyEmptyException {
         super(id, outCount);
@@ -35,7 +31,7 @@ public class SwitchNode extends InputOutputNode {
         keys = JsonMessage.splitKeys(property);
     }
 
-    public SwitchNode(int outCount, String property, PropertyType type,
+    public SwitchNode(int outCount, String property, String type,
             JSONArray rules, Boolean checkall, String flowId)
             throws RulesFormatViolationException, PropertyEmptyException {
         super(outCount);
@@ -99,11 +95,11 @@ public class SwitchNode extends InputOutputNode {
             JSONObject messagJsonObject = ((JsonMessage) message).getJsonObject();
             JSONObject destJsonObject = null;
 
-            if (propertyType.equals(PropertyType.MSG)) {
+            if (propertyType.equals("msg")) {
                 destJsonObject = JsonMessage.getDestJsonObject(messagJsonObject, keys);
-            } else if (propertyType.equals(PropertyType.FLOW)) {
+            } else if (propertyType.equals("flow")) {
                 destJsonObject = NodeRedSystem.getInstance().getFlow(flowId).getFlowJsonObject();
-            } else if (propertyType.equals(PropertyType.GLOBAL)) {
+            } else if (propertyType.equals("global")) {
                 // 미구현
             }
 
@@ -133,7 +129,7 @@ public class SwitchNode extends InputOutputNode {
                         if (((JSONObject) destJsonObject.get(keys[keys.length - 1]))
                                 .containsKey(rule.get("v"))) {
                             output(j, message);
-                        } else if (rule.get("vt").equals("MSG")) {
+                        } else if (rule.get("vt").equals("msg")) {
                             // String[] v = splitProperts(rule.get("v").toString());
                             // JSONObject messageDestJsonObject = UndefinedJsonObject
                             // .getDestJsonObject(((JsonMessage) message).getJsonObject(), v);

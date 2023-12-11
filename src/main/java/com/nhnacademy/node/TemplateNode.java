@@ -13,16 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class TemplateNode extends InputOutputNode {
-    public enum FieldType {
-        MSG, FLOW, GLOBAL
-    }
-
     private String field;
-    private FieldType fieldType;
+    private String fieldType;
     private String template;
     private String[] keys;
 
-    public TemplateNode(String id, String field, FieldType type,
+    public TemplateNode(String id, String field, String type,
             String template) {
         super(id, 1);
         this.field = field;
@@ -30,7 +26,7 @@ public class TemplateNode extends InputOutputNode {
         this.template = template;
     }
 
-    public TemplateNode(String field, FieldType type,
+    public TemplateNode(String field, String type,
             String template) {
         super(1);
         this.field = field;
@@ -54,11 +50,11 @@ public class TemplateNode extends InputOutputNode {
                 continue;
             JSONObject jsonObject = ((JsonMessage) message).getJsonObject();
             JSONObject propertyJsonObject = null;
-            if (fieldType.equals(FieldType.MSG)) {
+            if (fieldType.equals("msg")) {
                 propertyJsonObject = jsonObject;
-            } else if (fieldType.equals(FieldType.FLOW)) {
+            } else if (fieldType.equals("flow")) {
                 // propertyJsonObject = NodeRedSystem.getInstance().getFlow(id);
-            } else if (fieldType.equals(FieldType.GLOBAL)) {
+            } else if (fieldType.equals("global")) {
                 // propertyJsonObject = message.getGlobalJsonObject();
             }
             String result = "";

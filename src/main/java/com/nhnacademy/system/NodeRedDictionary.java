@@ -19,10 +19,6 @@ public class NodeRedDictionary {
 
     private void setDictionary() {
         dictionary = new HashMap<>();
-        dictionary.put("msg", "MSG");
-        dictionary.put("full", "FULL");
-        dictionary.put("flow", "FLOW");
-        dictionary.put("global", "GLOBAL");
         dictionary.put("switch", "SwitchNode");
         dictionary.put("debug", "DebugNode");
         dictionary.put("function", "FunctionNode");

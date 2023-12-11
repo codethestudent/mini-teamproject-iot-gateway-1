@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "ReadFileNode",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.node.ReadFileNode",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
+            "name": "test",
+            "request": "launch",
+            "mainClass": "com.nhnacademy.node.test",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
             "name": "FunctionNode",
             "request": "launch",
             "mainClass": "com.nhnacademy.node.FunctionNode",

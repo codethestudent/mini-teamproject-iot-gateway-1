@@ -1,17 +1,13 @@
 package com.nhnacademy.system;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.FileReader;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
 
-import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -24,9 +20,6 @@ import com.nhnacademy.node.MqttInNode;
 import com.nhnacademy.node.MqttOutNode;
 import com.nhnacademy.node.SwitchNode;
 import com.nhnacademy.node.TemplateNode;
-import com.nhnacademy.node.DebugNode.TargetType;
-import com.nhnacademy.node.SwitchNode.PropertyType;
-import com.nhnacademy.node.TemplateNode.FieldType;
 import com.nhnacademy.wire.Wire;
 
 import lombok.extern.slf4j.Slf4j;
@@ -122,8 +115,7 @@ public class NodeRedSystem {
                         Boolean switchCheckall = Boolean.parseBoolean((String) jsonObject.get("checkall"));
                         z = (String) jsonObject.get("z");
                         SwitchNode switchNode = new SwitchNode(switchId, 10, switchProperty,
-                                PropertyType.valueOf(NodeRedDictionary.getInstance().getDictionary(switchPropertyType)),
-                                switchRules, switchCheckall, z);
+                                switchPropertyType, switchRules, switchCheckall, z);
                         nodes.add(switchNode);
                         break;
                     case "change":
@@ -142,9 +134,7 @@ public class NodeRedSystem {
                         String debugTargetType = (String) jsonObject.get("targetType");
                         String debugComplete = (String) jsonObject.get("complete");
                         DebugNode debugNode = new DebugNode(debugId, debugActive, debugTosidebar, debugConsole,
-                                debugTostatus, DebugNode.TargetType.valueOf(
-                                        NodeRedDictionary.getInstance().getDictionary(debugTargetType)),
-                                debugComplete);
+                                debugTostatus, debugTargetType, debugComplete);
                         nodes.add(debugNode);
                         break;
                     case "template":
@@ -153,8 +143,7 @@ public class NodeRedSystem {
                         String templateFieldType = (String) jsonObject.get("fieldType");
                         String templateTemplate = (String) jsonObject.get("template");
                         TemplateNode templateNode = new TemplateNode(templateId, templateField,
-                                FieldType.valueOf(NodeRedDictionary.getInstance().getDictionary(templateFieldType)),
-                                templateTemplate);
+                                templateFieldType, templateTemplate);
                         nodes.add(templateNode);
                         break;
                     default:
@@ -174,7 +163,7 @@ public class NodeRedSystem {
                     case "mqtt in":
                         MqttInNode mqttInNode = null;
                         for (int j = 0; j < nodes.size(); j++) {
-                            if (nodes.get(j).getId().equals((String) jsonObject.get("id"))) {
+                            if (nodes.get(j).getId().equals(jsonObject.get("id"))) {
                                 mqttInNode = (MqttInNode) nodes.get(j);
                                 break;
                             }
