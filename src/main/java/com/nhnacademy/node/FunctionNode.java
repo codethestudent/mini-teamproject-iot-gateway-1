@@ -26,7 +26,7 @@ public class FunctionNode extends InputOutputNode {
 
     @Override
     void preprocess() {
-        sensors = SystemOption.getSystemOption().getSensors();
+        sensors = SystemOption.getSensors();
         sensorList = Arrays.asList(sensors);
         value = new HashMap<>();
         log.info(id + " node start");

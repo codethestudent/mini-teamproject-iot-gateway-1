@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +34,7 @@ public class SystemOption {
     private static final String CLASS_NAMES = "{\n" + //
             "    \"mqtt in\": \"MqttInNode\",\n" + //
             "    \"mqtt out\": \"MqttOutNode\",\n" + //
-            "    \"functionNode\": \"FunctionNode\"\n" + //
+            "    \"function\": \"FunctionNode\"\n" + //
             "}";
 
     private static JSONParser jsonParser = new JSONParser();
@@ -48,7 +46,7 @@ public class SystemOption {
     private boolean isCommandMode = false;
 
     private String applicationName;
-    private String[] sensors;
+    private static String[] sensors;
 
     public SystemOption(String[] args) {
         nodeList = new HashMap<>();
@@ -109,8 +107,6 @@ public class SystemOption {
 
                 nodeList.put(node.get("id").toString(), instance);
                 wireInfo.put(node.get("id").toString(), (JSONArray) node.get("wires"));
-                // log.trace(nodeList.toString());
-                // log.info(wireInfo.toString());
             }
         }
     }
@@ -121,14 +117,13 @@ public class SystemOption {
         try {
             JSONObject classNames = (JSONObject) jsonParser.parse(CLASS_NAMES);
             Class<?> nodeClass = Class.forName(CLASS_PATH + classNames.get(node.get("type").toString()));
-            // log.info(Arrays.toString(nodeClass.getConstructors()));
 
             for (Constructor<?> constructor : nodeClass.getConstructors()) {
                 if (constructor.getParameterTypes()[0] == int.class
                         && constructor.getParameterTypes()[1] == JSONObject.class) {
                     if (nodeClass.equals(MqttInNode.class)) {
                         instance = constructor.newInstance(((JSONArray) node.get("wires")).size(), node);
-                    } else if(nodeClass.equals(MqttOutNode.class)){
+                    } else if (nodeClass.equals(MqttOutNode.class)) {
                         instance = constructor.newInstance(((JSONArray) node.get("wires")).size() + 1, node);
                     }
                     break;
@@ -157,19 +152,45 @@ public class SystemOption {
          * inputNode면 connectOutputWire()
          * outputNode면 connectInputWire()
          * inputOutputNode면 둘다
+         * 
+         * 일단 jsonArray안에 jsonArray가 있는 상황은 기본
+         * 상황 1. JsonArray 안에 있는 JsonArray에 여러 wire들이 있는 경우
+         * 상황 2. JsonArray 안에 wire가 하나씩 있는 JsonArray들이 여러개 있는 경우
+         * 상황 3. JsonAarray 안에 여러 wire를 가진 JsonArray가 여러개 있는경우
          */
         log.info(nodeList.entrySet().toString());
         log.info(wireInfo.entrySet().toString());
         for (Map.Entry<String, Object> entry : nodeList.entrySet()) {
             String id = entry.getKey();
             Object node = entry.getValue();
-            if (node == null){
+            if (node == null) {
                 continue;
             }
-            if(node instanceof InputNode){
+            if (node instanceof InputNode) {
                 InputNode inputNode = (InputNode) node;
+                log.info(wireInfo.get(id).size() + "");
+                log.info(((JSONArray) wireInfo.get(id).get(1)).size() + "");
 
+            } else if (node instanceof OutputNode) {
+                OutputNode outputNode = (OutputNode) node;
+                // log.info(wireInfo.get(id).get(0).toString());
+
+            } else if (node instanceof InputOutputNode) {
+                InputOutputNode IONode = (InputOutputNode) node;
+                log.info(wireInfo.get(id).get(0).toString());
             }
         }
+    }
+
+    public Wire[] createWires(JSONArray wireList) {
+        JSONArray[] 
+
+        for (JSONArray array : wireList) {
+
+        }
+    }
+
+    public static String[] getSensors() {
+        return sensors;
     }
 }

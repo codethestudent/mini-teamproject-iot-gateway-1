@@ -143,5 +143,15 @@ public class Debug extends OutputNode {
     public String getNodeName(){
         return nodeName;
     }
+
+    @Override
+    void preprocess() {
+        throw new UnsupportedOperationException("Unimplemented method 'preprocess'");
+    }
+
+    @Override
+    void postprocess() {
+        throw new UnsupportedOperationException("Unimplemented method 'postprocess'");
+    }
     
 }
