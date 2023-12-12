@@ -18,6 +18,10 @@ public abstract class ActiveNode extends Node implements Runnable {
         running = false;
     }
 
+    public Thread getThread() {
+        return thread;
+    }
+
     ActiveNode(String id) {
         super(id);
         thread = new Thread(this, getId());

@@ -14,7 +14,7 @@ import com.nhnacademy.wire.Wire;
 public class test {
     public static void main(String[] args) throws ParseException {
         JSONParser parser = new JSONParser();
-        String json = "{\"id\":\"n1\",\"type\":\"inject\",\"z\":\"flow1\",\"name\":\"\",\"props\":[{\"p\":\"payload\"},{\"p\":\"topic\",\"v\":\"\",\"vt\":\"num\"}],\"repeat\":\"1\",\"crontab\":\"\",\"once\":true,\"onceDelay\":0.1,\"topic\":\"\",\"payload\":\"\",\"payloadType\":\"date\",\"x\":850,\"y\":480,\"wires\":[[]]}";
+        String json = "{\"id\":\"n1\",\"type\":\"inject\",\"z\":\"flow1\",\"name\":\"\",\"props\":[{\"p\":\"payload\"},{\"p\":\"topic\",\"v\":\"\",\"vt\":\"num\"}],\"repeat\":\"3\",\"crontab\":\"\",\"once\":true,\"onceDelay\":0.1,\"topic\":\"\",\"payload\":\"\",\"payloadType\":\"date\",\"x\":850,\"y\":480,\"wires\":[[]]}";
         InjectNode injectNode = InjectNode.generateNode((JSONObject) parser.parse(json));
         DebugNode debugNode = new DebugNode(true, true, true, true, "full", "payload");
         Wire wire = new Wire();
